@@ -1,6 +1,5 @@
 package io.github.russianmushroom;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -15,8 +14,7 @@ public class MultiInventoryManager extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		this.log.info(pdfFile.getName() + " has been enabled!");
-		
+		this.log.info(pdfFile.getName() +" v" + pdfFile.getVersion() + " has been enabled!");
 		getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 		
 		super.onEnable();

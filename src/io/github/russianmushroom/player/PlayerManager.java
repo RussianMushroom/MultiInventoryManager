@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,24 +32,11 @@ public class PlayerManager {
 		// Set variables
 		this.player = player;
 		
+		this.playerInventory = Arrays.asList(player.getInventory().getContents());
 		this.playerHealth = player.getHealth();
 		this.playerXP = player.getExp();
 		this.playerLvl = player.getLevel();
 		this.playerUUID = player.getUniqueId();
-		
-		//populateLists();
-	}
-// FIXME
-	private void populateLists() {
-		if(player.getInventory() != null) 
-			Arrays.asList(player.getInventory())
-			.parallelStream()
-			.forEach(pInv -> {
-				playerInventory.add((ItemStack) pInv);
-			});
-		
-		playerInventory.forEach(x -> player.sendRawMessage(x.toString()));
-		
 	}
 
 	// Getters
