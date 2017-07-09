@@ -3,15 +3,10 @@ package io.github.russianmushroom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.logging.log4j.core.config.plugins.util.PluginManager;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.russianmushroom.listener.PlayerListener;
-import io.github.russianmushroom.player.PlayerManager;
 
 public class MultiInventoryManager extends JavaPlugin {
 	
