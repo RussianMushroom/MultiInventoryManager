@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 
-public class Stack {
+public class Stack extends Object {
 
 	private int quantity = 0;
 	
@@ -27,6 +27,7 @@ public class Stack {
 			this.quantity = iStack.getAmount();
 			this.type = iStack.getType();
 			this.durability = iStack.getDurability();
+			this.entchantments = iStack.getEnchantments();
 		}
 	}
 	
