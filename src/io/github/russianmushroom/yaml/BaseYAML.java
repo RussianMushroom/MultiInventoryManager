@@ -16,9 +16,9 @@ import org.yaml.snakeyaml.Yaml;
  */
 public class BaseYAML {
 	
-	private static final File config = new File("plugins/MIMconfig.yml");
+	public static final File CONFIG = new File("plugins/MIMconfig.yml");
 	
-	private static File baseFile = new File("plugins/MIM/Player Data");
+	private static File baseFile = new File("plugins/MIM/playerdata");
 	
 	private static Yaml ymal = new Yaml();
 	
@@ -35,16 +35,20 @@ public class BaseYAML {
 	 */
 	public static Path getPlayerFolder() {
 			try {
-				if(!config.exists())
+				if(!CONFIG.exists())
 					Logger.getLogger("Minecraft").log(Level.WARNING,
 							String.format("%s was not detected, using default path: %s",
-									config.toString(),
+									CONFIG.toString(),
 									baseFile.toString()));
 				else
-					baseFile = new File(getData(config).get("basePath").toString());
+					baseFile = new File(getData(CONFIG).get("basePath").toString());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
+			// Create directory that is used
+			if(!baseFile.exists())
+				baseFile.mkdirs();
 			
 			return baseFile.toPath();
 	}
