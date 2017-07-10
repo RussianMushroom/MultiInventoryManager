@@ -18,6 +18,7 @@ public class PlayerManager {
 	private Player player;
 	
 	private double playerHealth;
+	private double playerMaxHealth;
 	
 	private float playerXP;
 	
@@ -31,6 +32,7 @@ public class PlayerManager {
 		
 		this.playerInventory = Arrays.asList(player.getInventory().getContents());
 		this.playerHealth = player.getHealth();
+		this.playerMaxHealth = player.getMaxHealth();
 		this.playerXP = player.getExp();
 		this.playerLvl = player.getLevel();
 		this.playerUUID = player.getUniqueId();
@@ -52,6 +54,10 @@ public class PlayerManager {
 
 	public double getPlayerHealth() {
 		return playerHealth;
+	}
+	
+	public double getPlayerMaxHealth() {
+		return playerMaxHealth;
 	}
 
 	public float getPlayerXP() {
