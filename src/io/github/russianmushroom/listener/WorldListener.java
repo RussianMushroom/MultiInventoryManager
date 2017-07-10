@@ -1,6 +1,5 @@
 package io.github.russianmushroom.listener;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.world.WorldLoadEvent;
 

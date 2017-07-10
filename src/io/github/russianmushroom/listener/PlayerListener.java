@@ -1,19 +1,18 @@
 package io.github.russianmushroom.listener;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import io.github.russianmushroom.player.PlayerManager;
+import io.github.russianmushroom.yaml.BaseYAML;
 
 /**
  * Handle all events connected to the player. Update database accordlingly.
  * @author RussianMushroom
  *
  */
-public class PlayerListener implements Listener {
+public class PlayerListener implements Listener{
 
 	/**
 	 * Check the world type and load player's information accordingly
@@ -21,6 +20,7 @@ public class PlayerListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
+		BaseYAML.getPlayerFolder();
 		// Update files
 	}
 	
@@ -30,6 +30,7 @@ public class PlayerListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
+		BaseYAML.getPlayerFolder();
 		// Update files
 	}
 	
