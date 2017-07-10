@@ -110,6 +110,8 @@ public class PlayerFileManager {
 		
 		obj.put(GameMode.SURVIVAL.toString(), new HashMap<>());
 		obj.put(GameMode.CREATIVE.toString(), new HashMap<>());
+		obj.put(GameMode.SPECTATOR.toString(), new HashMap<>());
+		obj.put(GameMode.ADVENTURE.toString(), new HashMap<>());
 		
 		FileWriter writer = new FileWriter(dataFile);
 		
