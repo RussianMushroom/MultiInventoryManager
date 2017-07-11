@@ -14,8 +14,8 @@ import io.github.russianmushroom.item.Stack;
 
 public class PlayerManager {
 	
-	private List<Stack> playerInventory = Collections.synchronizedList(new ArrayList<>());
-	private List<Stack> playerEnderInventory = Collections.synchronizedList(new ArrayList<>());
+	private List<String> playerInventory = Collections.synchronizedList(new ArrayList<>());
+	private List<String> playerEnderInventory = Collections.synchronizedList(new ArrayList<>());
 	
 	private Player player;
 	
@@ -30,10 +30,10 @@ public class PlayerManager {
 	public PlayerManager(Player player) {
 		// Set variables
 		this.player = player;
-		
+
 		Arrays.asList(player.getInventory().getContents())
 			.forEach(iStack -> {
-				playerInventory.add(new Stack(iStack));
+				playerInventory.add(new Stack(iStack).toString());
 			});
 		
 		this.playerHealth = player.getHealth();
@@ -44,11 +44,11 @@ public class PlayerManager {
 
 	// Getters
 	
-	public Optional<List<ItemStack>> getPlayerInv() {
+	public Optional<List<String>> getPlayerInv() {
 		return Optional.of(playerInventory);
 	}
 
-	public Optional<List<ItemStack>> getPlayerEnderInv() {
+	public Optional<List<String>> getPlayerEnderInv() {
 		return Optional.of(playerEnderInventory);
 	}
 
@@ -58,10 +58,6 @@ public class PlayerManager {
 
 	public double getPlayerHealth() {
 		return playerHealth;
-	}
-	
-	public double getPlayerMaxHealth() {
-		return playerMaxHealth;
 	}
 
 	public float getPlayerXP() {
