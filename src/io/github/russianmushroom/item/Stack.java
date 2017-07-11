@@ -44,4 +44,15 @@ public class Stack extends Object {
 		Bukkit.broadcastMessage(metaTags);
 	}
 	
+	@Override
+	public String toString() {
+		return String.format(
+				"Quantity:%s\nType:%s\nDurability:%s\nMeta:%s",
+				quantity,
+				type,
+				durability,
+				metaTags
+				);
+	}
+	
 }
