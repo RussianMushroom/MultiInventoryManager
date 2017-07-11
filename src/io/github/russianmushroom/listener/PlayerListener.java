@@ -55,7 +55,15 @@ public class PlayerListener implements Listener{
 		for(ItemStack s : event.getPlayer().getInventory().getContents()) {
 			if(s != null) {
 				Stack stack = new Stack(s);
+				Bukkit.broadcastMessage(stack.toString());
 			}
+		}
+		PlayerManager pM = new PlayerManager(event.getPlayer());
+		try {
+			PlayerFileManager.save(pM);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
