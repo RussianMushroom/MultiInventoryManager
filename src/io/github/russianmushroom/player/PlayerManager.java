@@ -10,15 +10,16 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.russianmushroom.item.Stack;
+
 public class PlayerManager {
 	
-	private List<ItemStack> playerInventory = Collections.synchronizedList(new ArrayList<>());
-	private List<ItemStack> playerEnderInventory = Collections.synchronizedList(new ArrayList<>());
+	private List<Stack> playerInventory = Collections.synchronizedList(new ArrayList<>());
+	private List<Stack> playerEnderInventory = Collections.synchronizedList(new ArrayList<>());
 	
 	private Player player;
 	
 	private double playerHealth;
-	private double playerMaxHealth;
 	
 	private float playerXP;
 	
@@ -30,9 +31,12 @@ public class PlayerManager {
 		// Set variables
 		this.player = player;
 		
-		this.playerInventory = Arrays.asList(player.getInventory().getContents());
+		Arrays.asList(player.getInventory().getContents())
+			.forEach(iStack -> {
+				playerInventory.add(new Stack(iStack));
+			});
+		
 		this.playerHealth = player.getHealth();
-		this.playerMaxHealth = player.getMaxHealth();
 		this.playerXP = player.getExp();
 		this.playerLvl = player.getLevel();
 		this.playerUUID = player.getUniqueId();
