@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -87,11 +88,11 @@ public class PlayerFileManager {
 	@SuppressWarnings("unchecked")
 	private static void addEntry(GameMode gMode) throws IOException {
 		
-		data.put("playerInventory", pManager.getPlayerInv().orElse(new ArrayList<>()));
+		data.put("playerInventory", pManager.getPlayerInv().orElse(Arrays.asList("empty")));
 		data.put("playerHealth", pManager.getPlayerHealth());
-		data.put("playerMaxHealth", pManager.getPlayerMaxHealth());
 		data.put("playerXP", pManager.getPlayerXP());
 		data.put("playerLvl", pManager.getPlayerLvl());
+		
 		
 		obj = (Map<String, Map<String, Object>>) yaml.load(new FileInputStream(playerData));
 		obj.replace(gMode.toString(), data);
