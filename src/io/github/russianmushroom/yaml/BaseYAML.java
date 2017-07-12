@@ -16,6 +16,9 @@ import org.yaml.snakeyaml.Yaml;
  */
 public class BaseYAML {
 	
+	static boolean saveAdventure = false;
+	static boolean saveSpectator = false;
+	
 	public static final File CONFIG = new File("plugins/MIMconfig.yml");
 	
 	private static File baseFile = new File("plugins/MIM/playerdata");
@@ -25,6 +28,12 @@ public class BaseYAML {
 	@SuppressWarnings("unchecked")
 	public static Map<String, Object> getData(File targetFile) throws IOException {
 		return (Map<String, Object>) ymal.load(
+				new FileInputStream(targetFile));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Map<String, Map<String, Object>> getAllData(File targetFile) throws IOException {
+		return (Map<String, Map<String, Object>>) ymal.load(
 				new FileInputStream(targetFile));
 	}
 	
@@ -53,8 +62,20 @@ public class BaseYAML {
 			return baseFile.toPath();
 	}
 	
-	public static Optional<Boolean> getSaveSpectator() {
-		
+	public static boolean getSaveSpectator() {
+		try {
+			return Boolean.valueOf(getData(CONFIG).get("spectator").toString());
+		} catch (IOException e) {
+			return saveSpectator;
+		}
+	}
+	
+	public static boolean getSaveAdventure() {
+		try {
+			return Boolean.valueOf(getData(CONFIG).get("adventure").toString());
+		} catch (IOException e) {
+			return saveAdventure;
+		}
 	}
 
 }
