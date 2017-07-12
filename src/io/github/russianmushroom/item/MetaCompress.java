@@ -28,7 +28,6 @@ public class MetaCompress {
 	 * @param iStack
 	 * @return
 	 */
-	@SuppressWarnings("unused")
 	public static String compressMetaData(ItemStack iStack) {
 		ItemMeta iMeta = iStack.getItemMeta();
 		StringBuilder sBuilder = new StringBuilder();
@@ -42,7 +41,10 @@ public class MetaCompress {
 		
 		// Deal with leather armour: Save it's colour. (A+colour)
 		if(iMeta instanceof LeatherArmorMeta)
-			sBuilder.append("A" + ((LeatherArmorMeta) iMeta).getColor().asRGB() + "=" );
+			sBuilder.append("A" 
+					+ ((LeatherArmorMeta) iMeta).getColor().getRed() + "."
+					+ ((LeatherArmorMeta) iMeta).getColor().getGreen() + "."
+					+ ((LeatherArmorMeta) iMeta).getColor().getBlue() + "=");
 		// Deal with potions. Save it's effects.
 		else if(iMeta instanceof PotionMeta) {
 			// If potion has custom effects. (R+name+amplifier+duration)
