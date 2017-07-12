@@ -1,7 +1,6 @@
 package io.github.russianmushroom.item;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -92,15 +91,16 @@ public class MetaDecompress {
 	}
 	
 	/**
-	 * Splits string (#########) into three ints and returns a Color
-	 * @param colour Expecting #########
+	 * Splits string (###.###.###) into three ints and returns a Color
+	 * @param colour Expecting ###.###.###
 	 * @return
 	 */
 	private static Color toRGB(String colour) {
+		String[] rgb = colour.split(".");
 		return Color.fromRGB(
-				Integer.parseInt(colour.substring(0, 2)),
-				Integer.parseInt(colour.substring(3, 5)),
-				Integer.parseInt(colour.substring(6, 8)));
+				Integer.parseInt(rgb[0]),
+				Integer.parseInt(rgb[1]),
+				Integer.parseInt(rgb[2]));
 	}
 	
 }
