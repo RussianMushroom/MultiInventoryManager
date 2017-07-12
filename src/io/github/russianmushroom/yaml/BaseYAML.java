@@ -52,5 +52,9 @@ public class BaseYAML {
 			
 			return baseFile.toPath();
 	}
+	
+	public static Optional<Boolean> getSaveSpectator() {
+		
+	}
 
 }
