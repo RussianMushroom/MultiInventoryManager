@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,9 +17,6 @@ public class SavePlayerData {
 
 	private static Map<String, Map<String, Object>> obj = Collections.synchronizedMap(new HashMap<>());
 	private static Map<String, Object> data = Collections.synchronizedMap(new HashMap<>());
-	
-	boolean saveAdventure = false;
-	boolean saveSpectator = false;
 	
 	private static PlayerManager pManager;
 	
@@ -69,9 +65,10 @@ public class SavePlayerData {
 	@SuppressWarnings("unchecked")
 	private static void addEntry(GameMode gMode) throws IOException {
 		
-		data.put("playerInventory", pManager.getPlayerInv().orElse(Arrays.asList("empty")));
+		data.put("playerInventory", pManager.getPlayerInv().orElse("empty"));
 		data.put("playerHealth", pManager.getPlayerHealth());
 		data.put("playerXP", pManager.getPlayerXP());
+		data.put("playerSaturation", pManager.getPlayerSaturation());
 		data.put("playerLvl", pManager.getPlayerLvl());
 		
 		
