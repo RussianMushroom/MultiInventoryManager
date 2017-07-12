@@ -21,6 +21,7 @@ import io.github.russianmushroom.item.MetaDecompress;
 import io.github.russianmushroom.item.Stack;
 import io.github.russianmushroom.player.PlayerFileManager;
 import io.github.russianmushroom.player.PlayerManager;
+import io.github.russianmushroom.player.SavePlayerData;
 import io.github.russianmushroom.yaml.BaseYAML;
 
 
@@ -60,7 +61,7 @@ public class PlayerListener implements Listener{
 		}
 		PlayerManager pM = new PlayerManager(event.getPlayer());
 		try {
-			PlayerFileManager.save(pM);
+			PlayerFileManager.handle(pM, true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
