@@ -1,27 +1,24 @@
 package io.github.russianmushroom.player;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import io.github.russianmushroom.item.Stack;
 
 public class PlayerManager {
 	
-	private List<String> playerInventory = Collections.synchronizedList(new ArrayList<>());
-	private List<String> playerEnderInventory = Collections.synchronizedList(new ArrayList<>());
+	private String playerInventory = "";
+	private String playerEnderInventory = "";
 	
 	private Player player;
 	
 	private double playerHealth;
 	
 	private float playerXP;
+	private float playerSaturation;
 	
 	private int playerLvl;
 	
@@ -31,24 +28,29 @@ public class PlayerManager {
 		// Set variables
 		this.player = player;
 
+		StringBuilder sBuilder = new StringBuilder();
+		
 		Arrays.asList(player.getInventory().getContents())
 			.forEach(iStack -> {
-				playerInventory.add(new Stack(iStack).toString());
+				sBuilder.append(new Stack(iStack).toString() + "#");
 			});
+		
+		this.playerInventory = sBuilder.toString();
 		
 		this.playerHealth = player.getHealth();
 		this.playerXP = player.getExp();
 		this.playerLvl = player.getLevel();
 		this.playerUUID = player.getUniqueId();
+		this.playerSaturation = player.getSaturation();
 	}
 
 	// Getters
 	
-	public Optional<List<String>> getPlayerInv() {
+	public Optional<String> getPlayerInv() {
 		return Optional.of(playerInventory);
 	}
 
-	public Optional<List<String>> getPlayerEnderInv() {
+	public Optional<String> getPlayerEnderInv() {
 		return Optional.of(playerEnderInventory);
 	}
 
@@ -63,6 +65,10 @@ public class PlayerManager {
 	public float getPlayerXP() {
 		return playerXP;
 	}
+	
+	public float getPlayerSaturation() {
+		return playerSaturation;
+	}
 
 	public int getPlayerLvl() {
 		return playerLvl;
@@ -71,5 +77,7 @@ public class PlayerManager {
 	public UUID getPlayerUUID() {
 		return playerUUID;
 	}
+
+	
 	
 }
