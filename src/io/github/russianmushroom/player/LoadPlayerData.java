@@ -56,7 +56,7 @@ public class LoadPlayerData {
 	 * Split the saved inventory into it's components
 	 * <ul>
 	 * <li><code>.split("#")</code>: to get individual items</li>
-	 * <li><code>.split("::")</code>: to get individual components, like Durability, MetaData etc.</li>
+	 * <li><code>.split(":")</code>: to get individual components, like Durability, MetaData etc.</li>
 	 * <li>get MetaTags (Last in list) and decompress it</li>
 	 * @param pManager
 	 */
