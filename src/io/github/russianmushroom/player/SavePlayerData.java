@@ -30,7 +30,7 @@ public class SavePlayerData {
 	 * @param gMode
 	 * @throws IOException
 	 */
-	public static void save(PlayerManager pM, GameMode gMode) throws IOException {
+	public synchronized static void save(PlayerManager pM, GameMode gMode) throws IOException {
 		
 		pManager = pM;
 		
