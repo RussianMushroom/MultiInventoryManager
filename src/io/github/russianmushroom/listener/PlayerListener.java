@@ -1,7 +1,11 @@
 package io.github.russianmushroom.listener;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
@@ -20,6 +24,8 @@ import io.github.russianmushroom.player.SavePlayerData;
  */
 public class PlayerListener implements Listener{
 
+	Logger logger = Bukkit.getServer().getLogger();
+	
 	/**
 	 * Check the world type and load player's information accordingly
 	 * @param event
@@ -32,6 +38,7 @@ public class PlayerListener implements Listener{
 					new PlayerManager(event.getPlayer()), 
 					event.getPlayer().getGameMode());
 		} catch (IOException e) {
+			displayWarning(event.getPlayer(), false);
 			e.printStackTrace();
 		}
 	}
@@ -48,6 +55,7 @@ public class PlayerListener implements Listener{
 					new PlayerManager(event.getPlayer()), 
 					event.getPlayer().getGameMode());
 		} catch (IOException e) {
+			displayWarning(event.getPlayer(), true);
 			e.printStackTrace();
 		}
 		
@@ -57,6 +65,7 @@ public class PlayerListener implements Listener{
 					new PlayerManager(event.getPlayer()),
 					event.getNewGameMode());
 		} catch (IOException e) {
+			displayWarning(event.getPlayer(), false);
 			e.printStackTrace();
 		}
 		
@@ -74,9 +83,18 @@ public class PlayerListener implements Listener{
 					new PlayerManager(event.getPlayer()), 
 					event.getPlayer().getGameMode());
 		} catch (IOException e) {
+			displayWarning(event.getPlayer(), true);
 			e.printStackTrace();
 		}
 	}
 	
+	private void displayWarning(Player player, boolean saving) {
+		logger.log(Level.WARNING, String.format(
+				"Could not %s %s's inventory %s the file!",
+				saving ? "save" : "load",
+				player.getName()),
+				saving ? "from" : "to"
+				.toString());
+	}
 	
 }
