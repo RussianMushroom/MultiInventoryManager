@@ -1,7 +1,9 @@
 package io.github.russianmushroom.item;
 
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -10,6 +12,21 @@ import org.bukkit.potion.PotionData;
 
 public class MetaCompress {
 
+	/**
+	 * Compresses all item's enchantments to a String
+	 * @param enchant
+	 * @return
+	 */
+	public static String compressEnchantments(Map<Enchantment, Integer> enchant) {
+		StringBuilder sBuilder = new StringBuilder();
+		enchant.keySet()
+			.parallelStream()
+			.forEach(enchantment -> {
+				sBuilder.append(enchantment + "~" + enchant.get(enchantment).toString() + "_");
+			});
+		
+		return sBuilder.toString();
+	}
 
 	/**
 	 * Read item's meta data and compress it to a string for storage.
