@@ -1,11 +1,14 @@
 package io.github.russianmushroom.item;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.bukkit.Color;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -18,6 +21,26 @@ import org.bukkit.potion.PotionType;
 public class MetaDecompress {
 
 	private static PotionMeta pMeta;
+	
+	/**
+	 * Decompresses all String into Enchantment list.
+	 * @param enchant
+	 * @return
+	 */
+	public static Map<Enchantment, Integer> decompressEnchantments(String enchant) {
+		String[] enchantList = enchant.split("_");
+		Map<Enchantment, Integer> enchantments = Collections.synchronizedMap(new HashMap<>());
+		
+		// Temporary solution, replace with stream
+		for(String e : enchantList) {
+			enchantments.put(
+					Enchantment.getByName(e.toString().trim().split("~")[0]),
+					Integer.parseInt(e.toString().trim().split("~")[1])
+					);
+		}
+		
+		return enchantments;
+	}
 	
 	/**
 	 * Read item's meta data from String and generate an ItemStack
@@ -35,7 +58,7 @@ public class MetaDecompress {
 				.collect(Collectors.toConcurrentMap(
 						x -> x.toString().substring(0, 1),
 						x -> x.toString().substring(1,  x.length()),
-						(val, key) -> val + ";" + key));
+						(key, val) -> key + ";" + val));
 		
 		// Apply all effects
 		effectList.keySet()
