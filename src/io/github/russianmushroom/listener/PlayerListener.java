@@ -93,7 +93,7 @@ public class PlayerListener implements Listener{
 				"Could not %s %s's inventory %s the file!",
 				saving ? "save" : "load",
 				player.getName()),
-				saving ? "from" : "to"
+				saving ? "to" : "from"
 				.toString());
 	}
 	
