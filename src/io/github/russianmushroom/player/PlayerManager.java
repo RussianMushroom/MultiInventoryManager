@@ -1,16 +1,19 @@
 package io.github.russianmushroom.player;
 
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 import io.github.russianmushroom.item.Stack;
 
 public class PlayerManager {
 	
 	private String playerInventory = "";
+	private String playerArmour = "";
 	private String playerEnderInventory = "";
 	
 	private Player player;
@@ -24,24 +27,25 @@ public class PlayerManager {
 	
 	private UUID playerUUID;
 	
+	private Collection<PotionEffect> potionEffects;
+	
+	
 	public PlayerManager(Player player) {
 		// Set variables
 		this.player = player;
 
-		StringBuilder sBuilder = new StringBuilder();
-		
-		Arrays.asList(player.getInventory().getContents())
-			.forEach(iStack -> {
-				sBuilder.append(new Stack(iStack).toString() + "#");
-			});
-		
-		this.playerInventory = sBuilder.toString();
+		for(int i = 0; i < player.getInventory().getContents().length; i++) {
+			this.playerInventory += new Stack(
+					player.getInventory().getContents()[i], i)
+					.toString() + "#";
+		}
 		
 		this.playerHealth = player.getHealth();
 		this.playerXP = player.getExp();
 		this.playerLvl = player.getLevel();
 		this.playerUUID = player.getUniqueId();
 		this.playerSaturation = player.getSaturation();
+		this.potionEffects = player.getActivePotionEffects();
 	}
 
 	// Getters
