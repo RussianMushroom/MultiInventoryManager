@@ -21,16 +21,17 @@ public class Stack extends Object {
 	
 	private short durability = 0;
 	
-	private String metaTags = null;
-	private String enchantTags= null;
+	private String metaTags = "";
+	private String enchantTags= "";
 	
 	private Map<Enchantment, Integer> entchantments = Collections.synchronizedMap(new HashMap<>());
 	
 	private List<String> individualComp;
 	
-	public Stack(ItemStack iStack) {
+	public Stack(ItemStack iStack, int index) {
 		if(iStack != null) {
 			this.quantity = iStack.getAmount();
+			this.slot = index;
 			this.type = iStack.getType();
 			this.durability = iStack.getDurability();
 			this.entchantments = iStack.getEnchantments();
@@ -48,18 +49,14 @@ public class Stack extends Object {
 	 * @param iStack
 	 */
 	public Stack(String iStack) {
-		individualComp = Arrays.asList(iStack.split(":"));
-		Bukkit.broadcastMessage(individualComp.size() + "");
-		if(has(0))
-			quantity = Integer.parseInt(individualComp.get(0));
-		if(has(1))
-			type = Material.getMaterial(individualComp.get(1));
-		if(has(2))
-			durability = Short.parseShort(individualComp.get(2));
-		if(has(3))
-			metaTags = individualComp.get(3);
-		if(has(4))
-			enchantTags = individualComp.get(4);
+		individualComp = Arrays.asList(iStack.split(";"));
+		
+		quantity = has(0) ? Integer.parseInt(individualComp.get(0)) : 0;
+		type = has(1) ? Material.getMaterial(individualComp.get(1)) : Material.AIR;
+		durability = has(2) ? Short.parseShort(individualComp.get(2)) : 0;
+		metaTags = has(3) ? individualComp.get(3) : null;
+		enchantTags = has(4) ? individualComp.get(4) : null;
+		slot = has(5) ? Integer.parseInt(individualComp.get(5)) : 0;
 	}
 	
 	public ItemStack toItemStack() {
@@ -67,8 +64,10 @@ public class Stack extends Object {
 		
 		iStack.setAmount(quantity);
 		iStack.setDurability(durability);
-		iStack = MetaDecompress.decompressMetaData(iStack, metaTags);
-		iStack.addEnchantments(MetaDecompress.decompressEnchantments(enchantTags));
+		if(metaTags != null)
+			iStack.setItemMeta(MetaDecompress.decompressMetaData(iStack, metaTags));
+		if(enchantTags != null)
+			iStack.addEnchantments(MetaDecompress.decompressEnchantments(enchantTags));
 		
 		return iStack;
 	}
@@ -76,17 +75,18 @@ public class Stack extends Object {
 	@Override
 	public String toString() {
 		return String.format(
-				"%s:%s:%s:%s:%s:",
+				"%s:%s:%s:%s:%s:%s",
 				quantity,
 				type,
 				durability,
 				metaTags,
-				enchantTags
+				enchantTags,
+				slot
 				);
 	}
 	
 	private boolean has(int i) {
-		return (individualComp.get(i) == null | individualComp.get(i).equals("null")) ? false : true;
+		return (individualComp.get(i) == null | individualComp.get(i).equals("")) ? false : true;
 	}
 	
 }
