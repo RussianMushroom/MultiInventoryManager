@@ -13,3 +13,5 @@ spectator: {true/false}
 - basePath: Defines the save directory of the player's saves. [Default: plugins/MIM/playerdata]
 - adventure: (De)activate adventure gamemode logging. [Default: false]
 - spectator: (De)activate spectator gamemode logging. [Default: false]
+
+- Bukkit or Spigot v1.12
