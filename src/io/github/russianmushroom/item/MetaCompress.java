@@ -22,7 +22,7 @@ public class MetaCompress {
 		enchant.keySet()
 			.parallelStream()
 			.forEach(enchantment -> {
-				sBuilder.append(enchantment + "~" + enchant.get(enchantment).toString() + "_");
+				sBuilder.append(enchantment.getName() + "~" + enchant.get(enchantment).toString() + ";");
 			});
 		
 		return sBuilder.toString();
