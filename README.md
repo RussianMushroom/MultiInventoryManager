@@ -2,6 +2,8 @@
 Bukkit plugin to manage a player's inventory though worlds.
 
 ## Requirements:
+
+- Bukkit or Spigot v1.12
 - A .yml file "MIMconfig.yml" in the /plugin/ directory.
 ### Contents:
 ```
@@ -14,4 +16,3 @@ spectator: {true/false}
 - adventure: (De)activate adventure gamemode logging. [Default: false]
 - spectator: (De)activate spectator gamemode logging. [Default: false]
 
-- Bukkit or Spigot v1.12
