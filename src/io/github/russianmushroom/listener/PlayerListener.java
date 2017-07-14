@@ -34,6 +34,9 @@ public class PlayerListener implements Listener{
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		// Update files
 		try {
+			// clear the player's current inventory
+			event.getPlayer().getInventory().clear();
+			
 			LoadPlayerData.load(
 					new PlayerManager(event.getPlayer()), 
 					event.getPlayer().getGameMode());
@@ -61,6 +64,9 @@ public class PlayerListener implements Listener{
 		
 		// Load data for next GameMode
 		try {
+			// clear the player's current inventory
+			event.getPlayer().getInventory().clear();
+			
 			LoadPlayerData.load(
 					new PlayerManager(event.getPlayer()),
 					event.getNewGameMode());
@@ -92,8 +98,8 @@ public class PlayerListener implements Listener{
 		logger.log(Level.WARNING, String.format(
 				"Could not %s %s's inventory %s the file!",
 				saving ? "save" : "load",
-				player.getName()),
-				saving ? "to" : "from"
+				player.getName(),
+				saving ? "to" : "from")
 				.toString());
 	}
 	
