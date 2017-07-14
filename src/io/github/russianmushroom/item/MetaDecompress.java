@@ -5,8 +5,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -28,26 +30,28 @@ public class MetaDecompress {
 	 * @return
 	 */
 	public static Map<Enchantment, Integer> decompressEnchantments(String enchant) {
-		String[] enchantList = enchant.split("_");
 		Map<Enchantment, Integer> enchantments = Collections.synchronizedMap(new HashMap<>());
 		
-		// Temporary solution, replace with stream
-		for(String e : enchantList) {
-			enchantments.put(
-					Enchantment.getByName(e.toString().trim().split("~")[0]),
-					Integer.parseInt(e.toString().trim().split("~")[1])
-					);
-		}
+		Arrays.asList(enchant.split(";")).stream()
+			.forEach(e -> {
+				Bukkit.broadcastMessage(e);
+				enchantments.put(
+						Enchantment.getByName(e.toString().split("~")[0]),
+						Integer.parseInt(e.toString().split("~")[1])
+						);	
+				});
 		
 		return enchantments;
 	}
 	
 	/**
-	 * Read item's meta data from String and generate an ItemStack
+	 * Read item's meta data from String and generate an ItemMeta
 	 * @param data
 	 * @return ItemStack's meta
 	 */
-	public static ItemStack decompressMetaData(ItemStack iStack, String meta) {
+	public static ItemMeta decompressMetaData(ItemStack iStack, String meta) {
+		if(meta == "" || meta == null)
+			return null;
 		ItemMeta iMeta = iStack.getItemMeta();
         
 		List<String> metaComp = Arrays.asList(meta.split("="));
@@ -107,9 +111,8 @@ public class MetaDecompress {
 					
 			});
 		
-		iStack.setItemMeta(iMeta);
 		
-		return iStack;
+		return iMeta;
 		
 	}
 	
