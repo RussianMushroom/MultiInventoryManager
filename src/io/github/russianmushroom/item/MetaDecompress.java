@@ -1,11 +1,12 @@
 package io.github.russianmushroom.item;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
@@ -30,6 +31,9 @@ public class MetaDecompress {
 	 * @return
 	 */
 	public static Map<Enchantment, Integer> decompressEnchantments(String enchant) {
+		if(enchant == null)
+			return null;
+		
 		Map<Enchantment, Integer> enchantments = Collections.synchronizedMap(new HashMap<>());
 		
 		Arrays.asList(enchant.split(";")).stream()
@@ -45,6 +49,28 @@ public class MetaDecompress {
 	}
 	
 	/**
+	 * Decompress String with all active potions buffs and debuffs.
+	 * Format: (Type;Duration;Amplifier:)
+	 * @param potionEffects
+	 * @return
+	 */
+	public static Collection<PotionEffect> decompressPotionEffects(String potionEffects) {
+		Collection<PotionEffect> effect = new ArrayList<>();
+		Arrays.asList(potionEffects.split(":"))
+			.forEach(e -> {
+				if(!e.equals("")) {
+					String[] effectList = e.split(";");
+					effect.add(new PotionEffect(
+							PotionEffectType.getByName(effectList[0]),
+							Integer.parseInt(effectList[1]),
+							Integer.parseInt(effectList[2])
+							));
+				}
+			});
+			return effect;
+	}
+	
+	/**
 	 * Read item's meta data from String and generate an ItemMeta
 	 * @param data
 	 * @return ItemStack's meta
@@ -52,6 +78,7 @@ public class MetaDecompress {
 	public static ItemMeta decompressMetaData(ItemStack iStack, String meta) {
 		if(meta == "" || meta == null)
 			return null;
+		
 		ItemMeta iMeta = iStack.getItemMeta();
         
 		List<String> metaComp = Arrays.asList(meta.split("="));
