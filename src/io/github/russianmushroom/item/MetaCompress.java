@@ -1,5 +1,6 @@
 package io.github.russianmushroom.item;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
 
 public class MetaCompress {
 
@@ -25,6 +27,24 @@ public class MetaCompress {
 				sBuilder.append(enchantment.getName() + "~" + enchant.get(enchantment).toString() + ";");
 			});
 		
+		return sBuilder.toString();
+	}
+	
+	/**
+	 * Compress all active potions buffs and debuffs.
+	 * Format: (Type;Duration;Amplifier:)
+	 * @param potionEffects
+	 * @return
+	 */
+	public static String compressPotionBuffs(Collection<PotionEffect> potionEffects) {
+		StringBuilder sBuilder = new StringBuilder();
+		potionEffects.forEach(effect -> {
+			sBuilder.append(
+					effect.getType().getName() + ";"
+					+ effect.getDuration() + ";"
+					+ effect.getAmplifier() + ":"
+					);
+		});
 		return sBuilder.toString();
 	}
 
