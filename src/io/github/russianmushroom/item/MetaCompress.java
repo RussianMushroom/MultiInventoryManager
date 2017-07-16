@@ -4,10 +4,17 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
@@ -57,8 +64,8 @@ public class MetaCompress {
 	 * <li>P: Potion (R: Effects)</li>
 	 * <li>E: Enchantment Storage Meta</li>
 	 * <li>F: Fireworks</li>
-	 * <li>K: Firework Effect</li>
 	 * <li>B: Banner</li>
+	 * <li>M: MapMeta</li>
 	 * <li>S: Shulkerbox</li>
 	 * </ul>
 	 * "=" is used to separate traits.
@@ -102,9 +109,68 @@ public class MetaCompress {
 						+ "+" + pData.isUpgraded() + "=");
 			}
 		}
+		// Deal with enchanted books. (E+enchantmentCompressedString)
+		else if(iMeta instanceof EnchantmentStorageMeta) {
+			sBuilder.append("E" + MetaCompress.compressEnchantments(
+							iMeta.getEnchants()));
+		}
+		// Deal with fireworks.
+		// As there can be a list of effects, add a separater (~) between the effects and the rest of the data.
+		// (F + effects + ~ + power)
+		else if(iMeta instanceof FireworkMeta) {
+			if(((FireworkMeta) iMeta).hasEffects())
+				sBuilder.append("F" +
+						((FireworkMeta) iMeta).getEffects()
+							.stream()
+							.map(effect -> effect.toString())
+							.collect(Collectors.joining("+"))
+								+ "~"
+								+ ((FireworkMeta) iMeta).getPower()
+								+ "=");
+		}
+		// Deal with banners.
+		else if(iMeta instanceof BannerMeta) {
+			BannerMeta bMeta = (BannerMeta) iMeta;
+			sBuilder.append("B");
+			bMeta.getPatterns()
+				.forEach(pattern -> {
+					Color colour = pattern.getColor().getColor();
+					sBuilder.append(pattern.getPattern().getIdentifier() + "+");
+					sBuilder.append(formatColour(colour));
+					sBuilder.append("=");
+			});
+			sBuilder.append("#");
+		}
+		// Deal with maps. (M+colour+~+location+~+scaling)
+		else if(iMeta instanceof MapMeta) {
+			MapMeta mMeta = (MapMeta) iMeta;
+			sBuilder.append("M");
+			if(mMeta.hasColor())
+				sBuilder.append(formatColour(mMeta.getColor()));
+			if(mMeta.hasLocationName())
+				sBuilder.append(mMeta.getLocationName());
+			if(mMeta.isScaling())
+				sBuilder.append(mMeta.isScaling());
+			sBuilder.append("=");
+		}
 		
 		return sBuilder.toString();
 		
 	}
 	
+	private static String formatColour(Color colour) {
+		return String.format("%s.%s.%s~",
+				colour.getRed(),
+				colour.getGreen(),
+				colour.getBlue());
+	}
+	
+	/*
+	private static String formatLocation(Location location) {
+		return String.format("%s.%s.%s~",
+				location.getX(),
+				location.getY(),
+				location.getZ());
+	}
+	*/
 }
