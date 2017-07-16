@@ -16,7 +16,7 @@ public class EnderInventory {
 	public EnderInventory(Player player) {
 		StringBuilder sBuilder = new StringBuilder();
 		
-		Arrays.asList(player.getEnderChest().getContents())
+		Arrays.asList(player.getEnderChest().getStorageContents())
 			.parallelStream()
 			.forEach(iStack -> {
 				sBuilder.append(
