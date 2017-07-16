@@ -1,20 +1,19 @@
 package io.github.russianmushroom.player;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
 
+import io.github.russianmushroom.item.MetaCompress;
 import io.github.russianmushroom.item.Stack;
 
 public class PlayerManager {
 	
 	private String playerInventory = "";
-	private String playerArmour = "";
+	// private String playerArmour = "";
 	private String playerEnderInventory = "";
+	private String playerActivePotions = "";
 	
 	private Player player;
 	
@@ -24,10 +23,9 @@ public class PlayerManager {
 	private float playerSaturation;
 	
 	private int playerLvl;
+	private int playerHunger;
 	
 	private UUID playerUUID;
-	
-	private Collection<PotionEffect> potionEffects;
 	
 	
 	public PlayerManager(Player player) {
@@ -36,16 +34,18 @@ public class PlayerManager {
 
 		for(int i = 0; i < player.getInventory().getContents().length; i++) {
 			this.playerInventory += new Stack(
-					player.getInventory().getContents()[i], i)
+					player.getInventory().getContents()[i])
 					.toString() + "#";
 		}
-		
+	
+		this.playerActivePotions = MetaCompress.compressPotionBuffs(
+				player.getActivePotionEffects());
 		this.playerHealth = player.getHealth();
 		this.playerXP = player.getExp();
 		this.playerLvl = player.getLevel();
+		this.playerHunger = player.getFoodLevel();
 		this.playerUUID = player.getUniqueId();
 		this.playerSaturation = player.getSaturation();
-		this.potionEffects = player.getActivePotionEffects();
 	}
 
 	// Getters
@@ -77,11 +77,18 @@ public class PlayerManager {
 	public int getPlayerLvl() {
 		return playerLvl;
 	}
+	
+	public int getPlayerHunger() {
+		return playerHunger;
+	}
 
 	public UUID getPlayerUUID() {
 		return playerUUID;
 	}
 
+	public Optional<String> getPotionEffects() {
+		return Optional.of(playerActivePotions);
+	}
 	
 	
 }
