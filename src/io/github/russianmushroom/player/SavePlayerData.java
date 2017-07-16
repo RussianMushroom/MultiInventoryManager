@@ -11,17 +11,16 @@ import java.util.Map;
 import org.bukkit.GameMode;
 import org.yaml.snakeyaml.Yaml;
 
+import io.github.russianmushroom.item.EnderInventory;
 import io.github.russianmushroom.yaml.BaseYAML;
 
 public class SavePlayerData {
 
 	private static Map<String, Map<String, Object>> obj = Collections.synchronizedMap(new HashMap<>());
 	private static Map<String, Object> data = Collections.synchronizedMap(new HashMap<>());
-	
 	private static PlayerManager pManager;
-	
+	private static EnderInventory eInventory;
 	private static File playerData;
-	
 	private static final Yaml yaml = new Yaml();
 	
 	/**
@@ -33,6 +32,8 @@ public class SavePlayerData {
 	public synchronized static void save(PlayerManager pM, GameMode gMode) throws IOException {
 		
 		pManager = pM;
+		// Load ender inventory
+		eInventory = new EnderInventory(pM.getPlayer());
 		
 		// Create user dataFile
 		playerData = new File(BaseYAML.getPlayerFolder() 
@@ -66,10 +67,13 @@ public class SavePlayerData {
 	private static void addEntry(GameMode gMode) throws IOException {
 		
 		data.put("playerInventory", pManager.getPlayerInv().orElse("empty"));
+		data.put("playerActivePotions", pManager.getPotionEffects().orElse("empty"));
 		data.put("playerHealth", pManager.getPlayerHealth());
 		data.put("playerXP", pManager.getPlayerXP());
 		data.put("playerSaturation", pManager.getPlayerSaturation());
 		data.put("playerLvl", pManager.getPlayerLvl());
+		data.put("playerHunger", pManager.getPlayerHunger());
+		data.put("playerEnderInventory", eInventory.getEnderInventory());
 		
 		
 		obj = (Map<String, Map<String, Object>>) yaml.load(new FileInputStream(playerData));
