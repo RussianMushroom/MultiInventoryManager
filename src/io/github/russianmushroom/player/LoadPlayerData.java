@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.russianmushroom.item.MetaDecompress;
 import io.github.russianmushroom.item.Stack;
 import io.github.russianmushroom.yaml.BaseYAML;
 /**
@@ -49,7 +50,11 @@ public class LoadPlayerData {
 				Float.parseFloat(playerInventory.get("playerXP").toString()));
 		pManager.getPlayer().setLevel(
 				Integer.parseInt(playerInventory.get("playerLvl").toString()));
-		
+		pManager.getPlayer().addPotionEffects(
+				MetaDecompress.decompressPotionEffects(
+						playerInventory.get("playerActivePotions").toString()));
+		pManager.getPlayer().setFoodLevel(
+				Integer.parseInt(playerInventory.get("playerHunger").toString()));
 	}
 	
 	/**
@@ -63,6 +68,7 @@ public class LoadPlayerData {
 	private static void setPlayerInventory(PlayerManager pManager) {
 		String playerInv = playerInventory.get("playerInventory").toString();
 		List<String> individualItems = Arrays.asList(playerInv.split("#"));
+		Bukkit.broadcastMessage(individualItems.size() + "");
 		
 		individualItems.parallelStream()
 			.forEach(rawItem -> {
