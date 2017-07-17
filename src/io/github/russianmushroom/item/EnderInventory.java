@@ -2,6 +2,7 @@ package io.github.russianmushroom.item;
 
 import java.util.Arrays;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
@@ -16,9 +17,10 @@ public class EnderInventory {
 	public EnderInventory(Player player) {
 		StringBuilder sBuilder = new StringBuilder();
 		
-		Arrays.asList(player.getEnderChest().getStorageContents())
+		Arrays.asList(player.getEnderChest().getContents())
 			.parallelStream()
 			.forEach(iStack -> {
+				Bukkit.broadcastMessage(iStack.toString());
 				sBuilder.append(
 						new Stack(iStack).toString()
 						+ "#");
