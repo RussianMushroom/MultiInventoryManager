@@ -8,11 +8,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.FireworkEffect.Builder;
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -21,9 +27,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import com.google.common.collect.ImmutableList;
+
 public class MetaDecompress {
 
 	private static PotionMeta pMeta;
+	private static FireworkMeta fMeta;
 	
 	/**
 	 * Decompresses all String into Enchantment list.
@@ -93,7 +102,6 @@ public class MetaDecompress {
 		
 		// Apply all effects
 		effectList.keySet()
-			.parallelStream()
 			.forEach(effect -> {
 				switch (effect) {
 				// Set name
@@ -113,7 +121,7 @@ public class MetaDecompress {
 				// Potion effects
 				case "R":
 					pMeta = (PotionMeta) iMeta;
-					String[] effectType = effectList.get(effect).split("+");
+					String[] effectType = effectList.get(effect).split("\\+");
                     PotionEffect pEffect = new PotionEffect(
                     		PotionEffectType.getByName(effectType[0]),
                     		Integer.parseInt(effectType[1]),
@@ -124,7 +132,7 @@ public class MetaDecompress {
                 // Potion data
                 case "P":
                     pMeta = (PotionMeta) iMeta;
-					String[] effectData = effectList.get(effect).split("+");
+					String[] effectData = effectList.get(effect).split("\\+");
 					PotionData pData = new PotionData(
 							PotionType.valueOf(effectData[0]),
 							Boolean.valueOf(effectData[1]),
@@ -133,7 +141,34 @@ public class MetaDecompress {
 					
                     pMeta.setBasePotionData(pData);
 					break;
-					
+				// Enchanted books
+                case "E":
+                	Map<Enchantment, Integer> enchant = MetaDecompress.decompressEnchantments(
+                			effectList.get(effect));
+                	
+                	enchant.keySet().forEach(e -> {
+                		iMeta.addEnchant(e, enchant.get(e), true);
+                	});
+                	break;
+                // Fireworks
+                case "F":
+                	fMeta = (FireworkMeta) iMeta;
+                	List<String> effects = Arrays.asList(
+                			effectList.get(effect).split("="));
+                	
+                	effects.forEach(firework -> {
+                		String[] e = firework.split("\\+");
+                		Builder fEffect = FireworkEffect.builder();
+                		
+                		fEffect.flicker(Boolean.valueOf(e[0]));
+                		fEffect.trail(Boolean.valueOf(e[1]));
+                		fEffect.withColor(getUnmodifiableList(e[2].split("\\~")));
+                		if(!e[3].isEmpty())
+                			fEffect.withFade(getUnmodifiableList(e[3].split("\\~")));
+                		fEffect.with(Type.valueOf(e[4]));
+                
+                		fMeta.addEffect(fEffect.build());
+                 	});
 				}
 					
 			});
@@ -149,11 +184,19 @@ public class MetaDecompress {
 	 * @return
 	 */
 	private static Color toRGB(String colour) {
-		String[] rgb = colour.split(".");
+		String[] rgb = colour.split("\\.");
 		return Color.fromRGB(
 				Integer.parseInt(rgb[0]),
 				Integer.parseInt(rgb[1]),
 				Integer.parseInt(rgb[2]));
+	}
+	
+	private static List<Color> getUnmodifiableList(String[] list) {
+		List<Color> colourList=  Arrays.asList(list)
+				.stream()
+				.map(MetaDecompress::toRGB)
+				.collect(Collectors.toList());
+		return Collections.unmodifiableList(colourList);
 	}
 	
 }
