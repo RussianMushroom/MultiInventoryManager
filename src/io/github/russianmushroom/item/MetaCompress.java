@@ -1,9 +1,12 @@
 package io.github.russianmushroom.item;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -29,9 +32,10 @@ public class MetaCompress {
 	public static String compressEnchantments(Map<Enchantment, Integer> enchant) {
 		StringBuilder sBuilder = new StringBuilder();
 		enchant.keySet()
-			.parallelStream()
 			.forEach(enchantment -> {
-				sBuilder.append(enchantment.getName() + "~" + enchant.get(enchantment).toString() + ";");
+				sBuilder.append(
+						enchantment.getName() + "~" 
+						+ enchant.get(enchantment).toString() + ";");
 			});
 		
 		return sBuilder.toString();
@@ -76,7 +80,8 @@ public class MetaCompress {
 		ItemMeta iMeta = iStack.getItemMeta();
 		StringBuilder sBuilder = new StringBuilder();
 		
-		sBuilder.append("N" + iMeta.getDisplayName() + "=");
+		if(iMeta.hasDisplayName())
+			sBuilder.append("N" + iMeta.getDisplayName() + "=");
 		if(iMeta.hasLore())
 			sBuilder.append("L" + iMeta.getLore()
 				.stream()
@@ -111,22 +116,31 @@ public class MetaCompress {
 		}
 		// Deal with enchanted books. (E+enchantmentCompressedString)
 		else if(iMeta instanceof EnchantmentStorageMeta) {
-			sBuilder.append("E" + MetaCompress.compressEnchantments(
-							iMeta.getEnchants()));
+			sBuilder.append("E" + compressEnchantments(
+							((EnchantmentStorageMeta) iMeta).getStoredEnchants()));
 		}
 		// Deal with fireworks.
 		// As there can be a list of effects, add a separater (~) between the effects and the rest of the data.
-		// (F + effects + ~ + power)
+		// (F + effects(flicker+trail+colours+fadeColours+type) + ~ + power)
 		else if(iMeta instanceof FireworkMeta) {
 			if(((FireworkMeta) iMeta).hasEffects())
-				sBuilder.append("F" +
+				sBuilder.append("F");
 						((FireworkMeta) iMeta).getEffects()
-							.stream()
-							.map(effect -> effect.toString())
-							.collect(Collectors.joining("+"))
-								+ "~"
-								+ ((FireworkMeta) iMeta).getPower()
-								+ "=");
+							.forEach(effect -> {
+								sBuilder.append(effect.hasFlicker() + "+");
+								sBuilder.append(effect.hasTrail() + "+");
+								sBuilder.append(effect.getColors()
+										.stream()
+										.map(MetaCompress::formatColour)
+										.collect(Collectors.joining())
+										+ "+");
+								sBuilder.append(effect.getFadeColors()
+										.stream()
+										.map(MetaCompress::formatColour)
+										.collect(Collectors.joining())
+										+ "+");
+								sBuilder.append(effect.getType().name() + "=");
+							});
 		}
 		// Deal with banners.
 		else if(iMeta instanceof BannerMeta) {
@@ -139,6 +153,7 @@ public class MetaCompress {
 					sBuilder.append(formatColour(colour));
 					sBuilder.append("=");
 			});
+			
 			sBuilder.append("#");
 		}
 		// Deal with maps. (M+colour+~+location+~+scaling)
@@ -164,6 +179,8 @@ public class MetaCompress {
 				colour.getGreen(),
 				colour.getBlue());
 	}
+
+	
 	
 	/*
 	private static String formatLocation(Location location) {
