@@ -68,9 +68,8 @@ public class LoadPlayerData {
 	private static void setPlayerInventory(PlayerManager pManager) {
 		String playerInv = playerInventory.get("playerInventory").toString();
 		List<String> individualItems = Arrays.asList(playerInv.split("#"));
-		Bukkit.broadcastMessage(individualItems.size() + "");
 		
-		individualItems.parallelStream()
+		individualItems.stream()
 			.forEach(rawItem -> {
 				Stack stack = new Stack(rawItem);
 				ItemStack iStack = stack.toItemStack();
