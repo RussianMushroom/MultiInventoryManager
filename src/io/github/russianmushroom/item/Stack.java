@@ -87,7 +87,11 @@ public class Stack extends Object {
 	}
 	
 	private boolean has(int i) {
-		return individualComp.get(i) == null | individualComp.get(i).equals("");
+		try {
+			return !individualComp.get(i).equals("");
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return false;
+		}
 	}
 	
 }
