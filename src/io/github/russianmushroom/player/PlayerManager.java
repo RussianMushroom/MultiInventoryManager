@@ -1,5 +1,6 @@
 package io.github.russianmushroom.player;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,17 +15,12 @@ public class PlayerManager {
 	// private String playerArmour = "";
 	private String playerEnderInventory = "";
 	private String playerActivePotions = "";
-	
 	private Player player;
-	
 	private double playerHealth;
-	
 	private float playerXP;
 	private float playerSaturation;
-	
 	private int playerLvl;
 	private int playerHunger;
-	
 	private UUID playerUUID;
 	
 	
@@ -32,11 +28,19 @@ public class PlayerManager {
 		// Set variables
 		this.player = player;
 
-		for(int i = 0; i < player.getInventory().getContents().length; i++) {
-			this.playerInventory += new Stack(
-					player.getInventory().getContents()[i])
-					.toString() + "#";
-		}
+		// Bind player inventory
+		Arrays.asList(player.getInventory().getContents())
+			.stream()
+			.forEach(i -> {
+				playerInventory += new Stack(i).toString() + "#";
+			});
+		
+		// Bind player ender inventory
+		Arrays.asList(player.getEnderChest().getContents())
+			.stream()
+			.forEach(i -> {
+				playerEnderInventory += new Stack(i).toString() + "#";
+			});
 	
 		this.playerActivePotions = MetaCompress.compressPotionBuffs(
 				player.getActivePotionEffects());
