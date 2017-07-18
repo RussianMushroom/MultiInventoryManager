@@ -8,9 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Inventory;
 
 import io.github.russianmushroom.item.MetaDecompress;
 import io.github.russianmushroom.item.Stack;
@@ -40,6 +39,9 @@ public class LoadPlayerData {
 		// Set data to player
 		setPlayerData(pManager);
 		setPlayerInventory(pManager);
+		
+		setPlayerEnderInventory(pManager, pManager.getPlayer().getEnderChest());
+		
 	}
 	
 	private static void setPlayerData(PlayerManager pManager) {
@@ -72,11 +74,25 @@ public class LoadPlayerData {
 		individualItems.stream()
 			.forEach(rawItem -> {
 				Stack stack = new Stack(rawItem);
-				ItemStack iStack = stack.toItemStack();
 				
-				pManager.getPlayer().getInventory().addItem(iStack);
+				pManager.getPlayer().getInventory().addItem(stack.toItemStack());
 			});
 		
+	}
+	
+	/**
+	 * Get the saved ender inventory and assign it to the ender chest.
+	 * @param pManager
+	 * @param enderInventory
+	 */
+	private static void setPlayerEnderInventory(PlayerManager pManager, Inventory enderInventory) {
+		String playerEnderInventory = pManager.getPlayerEnderInv().orElse("");
+		
+		Arrays.asList(playerEnderInventory.split("#")).forEach(i -> {
+			Stack stack = new Stack(i);
+			
+			enderInventory.addItem(stack.toItemStack());
+		});
 	}
 	
 }
