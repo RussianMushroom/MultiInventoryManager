@@ -90,10 +90,7 @@ public class MetaCompress {
 		
 		// Deal with leather armour: Save it's colour. (A+colour)
 		if(iMeta instanceof LeatherArmorMeta)
-			sBuilder.append("A" 
-					+ ((LeatherArmorMeta) iMeta).getColor().getRed() + "."
-					+ ((LeatherArmorMeta) iMeta).getColor().getGreen() + "."
-					+ ((LeatherArmorMeta) iMeta).getColor().getBlue() + "=");
+			sBuilder.append("A" + formatColour(((LeatherArmorMeta) iMeta).getColor()) + "=");
 		// Deal with potions. Save it's effects.
 		else if(iMeta instanceof PotionMeta) {
 			// If potion has custom effects. (R+name+amplifier+duration)
@@ -132,12 +129,12 @@ public class MetaCompress {
 								sBuilder.append(effect.getColors()
 										.stream()
 										.map(MetaCompress::formatColour)
-										.collect(Collectors.joining())
+										.collect(Collectors.joining("~"))
 										+ "+");
 								sBuilder.append(effect.getFadeColors()
 										.stream()
 										.map(MetaCompress::formatColour)
-										.collect(Collectors.joining())
+										.collect(Collectors.joining("~"))
 										+ "+");
 								sBuilder.append(effect.getType().name() + "=");
 							});
@@ -149,23 +146,19 @@ public class MetaCompress {
 			bMeta.getPatterns()
 				.forEach(pattern -> {
 					Color colour = pattern.getColor().getColor();
-					sBuilder.append(pattern.getPattern().getIdentifier() + "+");
-					sBuilder.append(formatColour(colour));
-					sBuilder.append("=");
+					sBuilder.append(formatColour(colour) + "+");
+					sBuilder.append(pattern.getPattern().name() + "~");
 			});
 			
-			sBuilder.append("#");
+			sBuilder.append("=");
 		}
 		// Deal with maps. (M+colour+~+location+~+scaling)
 		else if(iMeta instanceof MapMeta) {
 			MapMeta mMeta = (MapMeta) iMeta;
 			sBuilder.append("M");
-			if(mMeta.hasColor())
-				sBuilder.append(formatColour(mMeta.getColor()));
-			if(mMeta.hasLocationName())
-				sBuilder.append(mMeta.getLocationName());
-			if(mMeta.isScaling())
-				sBuilder.append(mMeta.isScaling());
+			sBuilder.append(formatColour(mMeta.getColor()) + "+");
+			sBuilder.append(mMeta.getLocationName() + "+");
+			sBuilder.append(mMeta.isScaling() + "+");
 			sBuilder.append("=");
 		}
 		
@@ -174,7 +167,7 @@ public class MetaCompress {
 	}
 	
 	private static String formatColour(Color colour) {
-		return String.format("%s.%s.%s~",
+		return String.format("%s.%s.%s",
 				colour.getRed(),
 				colour.getGreen(),
 				colour.getBlue());
