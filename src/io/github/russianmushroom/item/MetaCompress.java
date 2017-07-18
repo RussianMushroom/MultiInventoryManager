@@ -1,15 +1,10 @@
 package io.github.russianmushroom.item;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
@@ -160,7 +155,7 @@ public class MetaCompress {
 			sBuilder.append(mMeta.getLocationName() + "+");
 			sBuilder.append(mMeta.isScaling() + "+");
 			sBuilder.append("=");
-		}
+		} 
 		
 		return sBuilder.toString();
 		
@@ -173,14 +168,4 @@ public class MetaCompress {
 				colour.getBlue());
 	}
 
-	
-	
-	/*
-	private static String formatLocation(Location location) {
-		return String.format("%s.%s.%s~",
-				location.getX(),
-				location.getY(),
-				location.getZ());
-	}
-	*/
 }
