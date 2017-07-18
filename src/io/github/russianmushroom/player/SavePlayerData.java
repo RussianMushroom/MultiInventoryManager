@@ -73,7 +73,7 @@ public class SavePlayerData {
 		data.put("playerSaturation", pManager.getPlayerSaturation());
 		data.put("playerLvl", pManager.getPlayerLvl());
 		data.put("playerHunger", pManager.getPlayerHunger());
-		// data.put("playerEnderInventory", eInventory.getEnderInventory());
+		data.put("playerEnderInventory", eInventory.getEnderInventory());
 		
 		
 		obj = (Map<String, Map<String, Object>>) yaml.load(new FileInputStream(playerData));
