@@ -1,4 +1,5 @@
 name: MultiInventoryManager
+author: RussianMushroom
 main: io.github.russianmushroom.MultiInventoryManager
-version: 0.1.0
-description: Separates inventories among worlds.
+version: 0.9.0
+description: Separates players' inventories among worlds.
