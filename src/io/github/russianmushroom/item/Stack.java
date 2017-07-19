@@ -11,12 +11,14 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-
-
+/**
+ * Replacement class for vanilla ItemStack.
+ * @author RussianMushroom
+ *
+ */
 public class Stack extends Object {
 
 	private int quantity = 0;
-	// private int slot = 0;
 	private Material type = Material.AIR;
 	private short durability = 0;
 	private String metaTags = "";
@@ -27,7 +29,6 @@ public class Stack extends Object {
 	public Stack(ItemStack iStack) {
 		if(iStack != null) {
 			this.quantity = iStack.getAmount();
-			// this.slot = index;
 			this.type = iStack.getType();
 			this.durability = iStack.getDurability();
 			this.enchantments = iStack.getEnchantments();
@@ -53,7 +54,6 @@ public class Stack extends Object {
 		durability = has(2) ? Short.parseShort(individualComp.get(2)) : 0;
 		metaTags = has(3) ? individualComp.get(3) : null;
 		enchantTags = has(4) ? individualComp.get(4) : null;
-		// slot = has(5) ? Integer.parseInt(individualComp.get(5)) : 0;
 	}
 	
 	public ItemStack toItemStack() {
@@ -82,7 +82,6 @@ public class Stack extends Object {
 				durability,
 				metaTags,
 				enchantTags
-				// slot
 				);
 	}
 	
