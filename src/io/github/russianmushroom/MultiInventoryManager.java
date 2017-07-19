@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.russianmushroom.command.DeleteData;
 import io.github.russianmushroom.listener.PlayerListener;
 import io.github.russianmushroom.player.PlayerManager;
 import io.github.russianmushroom.player.SavePlayerData;
@@ -49,6 +52,26 @@ public class MultiInventoryManager extends JavaPlugin {
 		this.log.info(pdfFile.getName() +" v" + pdfFile.getVersion() + " has been disabled!");
 		
 		super.onDisable();
+	}
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if(label.equalsIgnoreCase("mim")) {
+			if(args.length == 0)
+				sender.sendMessage("Invalid syntax: /mim delete [player name]");
+			else if(args.length > 2)
+				sender.sendMessage("Invalid syntax: /mim delete [player name]");
+			else {
+				if(args[0].equalsIgnoreCase("delete"))
+					DeleteData.remove(sender, args[1]);
+				else
+					sender.sendMessage("Invalid command.");
+			}
+				
+				
+		}
+			
+		return super.onCommand(sender, command, label, args);
 	}
 
 }
