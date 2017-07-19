@@ -3,3 +3,15 @@ author: RussianMushroom
 main: io.github.russianmushroom.MultiInventoryManager
 version: 0.7.0
 description: Separates players' inventories among worlds.
+
+commands:
+  mim:
+    description: MultiInventoryManager commands.
+    usage: |
+           /mim delete [player name]  - Delete the specified player's data file.
+
+permissions:
+    mim.delete:
+        description: deletes user's data file
+        default: op
+        command: "/mim delete"
