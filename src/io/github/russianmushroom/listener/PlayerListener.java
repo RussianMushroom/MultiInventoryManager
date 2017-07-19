@@ -34,12 +34,9 @@ public class PlayerListener implements Listener{
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		// Update files
 		try {
-			// Clear the player's current inventory
-			event.getPlayer().getInventory().clear();
-			
 			// Remove all potion effects
 			removePotionEffects(event.getPlayer());
-			
+
 			LoadPlayerData.load(
 					new PlayerManager(event.getPlayer()), 
 					event.getPlayer().getGameMode());
@@ -67,9 +64,6 @@ public class PlayerListener implements Listener{
 		
 		// Load data for next GameMode
 		try {
-			// clear the player's current inventory
-			event.getPlayer().getInventory().clear();
-			
 			// Remove all potion effects
 			removePotionEffects(event.getPlayer());
 			
