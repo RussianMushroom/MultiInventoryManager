@@ -68,6 +68,9 @@ public class LoadPlayerData {
 	 * @param pManager
 	 */
 	private static void setPlayerInventory(PlayerManager pManager) {
+		// clear the player's current inventory
+		pManager.getPlayer().getInventory().clear();
+		
 		String playerInv = playerInventory.get("playerInventory").toString();
 		List<String> individualItems = Arrays.asList(playerInv.split("#"));
 		
@@ -86,8 +89,10 @@ public class LoadPlayerData {
 	 * @param enderInventory
 	 */
 	private static void setPlayerEnderInventory(PlayerManager pManager, Inventory enderInventory) {
-		String playerEnderInventory = pManager.getPlayerEnderInv().orElse("");
+		// Clear player's ender inventory
+		pManager.getPlayer().getEnderChest().clear();
 		
+		String playerEnderInventory = pManager.getPlayerEnderInv().orElse("");
 		Arrays.asList(playerEnderInventory.split("#")).forEach(i -> {
 			Stack stack = new Stack(i);
 			
