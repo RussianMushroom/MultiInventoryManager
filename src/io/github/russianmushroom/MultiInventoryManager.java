@@ -12,7 +12,8 @@ import io.github.russianmushroom.player.PlayerManager;
 import io.github.russianmushroom.player.SavePlayerData;
 
 /**
- * Separates the inventories as well as data of players from one another through worlds (Survival, Creative, Adventure and Spectator)
+ * Separates the inventories as well as data of players from one another through worlds 
+ * (Survival, Creative, Adventure and Spectator)
  * @author RussianMushroom
  *
  */
