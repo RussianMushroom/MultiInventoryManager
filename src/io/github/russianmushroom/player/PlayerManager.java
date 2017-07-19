@@ -9,6 +9,11 @@ import org.bukkit.entity.Player;
 import io.github.russianmushroom.item.MetaCompress;
 import io.github.russianmushroom.item.Stack;
 
+/**
+ * Applies player data to PlayerManager.
+ * @author RussianMushroom
+ *
+ */
 public class PlayerManager {
 	
 	private String playerInventory = "";
@@ -53,7 +58,6 @@ public class PlayerManager {
 	}
 
 	// Getters
-	
 	public Optional<String> getPlayerInv() {
 		return Optional.of(playerInventory);
 	}
