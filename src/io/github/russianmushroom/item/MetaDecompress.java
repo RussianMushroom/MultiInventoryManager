@@ -8,31 +8,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Builder;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.bukkit.block.banner.Pattern;
+import org.bukkit.block.banner.PatternType;
 
-import com.google.common.collect.ImmutableList;
-
+/**
+ * Decompress serialised buffs, items and meta data to their default item type.
+ * @author RussianMushroom
+ *
+ */
 public class MetaDecompress {
 
 	private static PotionMeta pMeta;
 	private static FireworkMeta fMeta;
+	private static BannerMeta bMeta;
+	private static MapMeta mMeta;
 	
 	/**
 	 * Decompresses all String into Enchantment list.
@@ -169,8 +177,32 @@ public class MetaDecompress {
                 
                 		fMeta.addEffect(fEffect.build());
                  	});
+                	break;
+                // Banners
+                case "B":
+                	bMeta = (BannerMeta) iMeta;
+                	
+                	Arrays.asList(effectList.get(effect).split("\\~"))
+                		.forEach(b -> {
+                			Pattern pattern = new Pattern(
+                					DyeColor.getByColor(toRGB(b.split("\\+")[0])),
+                					PatternType.valueOf(b.split("\\+")[1]));
+                			bMeta.addPattern(pattern);
+                					
+                		});
+                	break;
+                case "M":
+                	mMeta = (MapMeta) iMeta;
+                	String[] mapDetails = effectList.get(effect).split("\\+");
+                	
+                	if(!mapDetails[0].equals(""))
+                		mMeta.setColor(toRGB(mapDetails[0]));
+                	if(!mapDetails[1].equals(""))
+                		mMeta.setLocationName(mapDetails[1]);
+                	if(!mapDetails[2].equals(""))
+                		mMeta.setScaling(Boolean.getBoolean(mapDetails[2]));
+                	
 				}
-					
 			});
 		
 		
@@ -184,6 +216,7 @@ public class MetaDecompress {
 	 * @return
 	 */
 	private static Color toRGB(String colour) {
+		colour = colour.replaceAll("\\~", "");
 		String[] rgb = colour.split("\\.");
 		return Color.fromRGB(
 				Integer.parseInt(rgb[0]),
