@@ -17,12 +17,17 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
+/**
+ * Compress items, effects and meta data to string to be stored in yml file.
+ * @author RussianMushroom
+ *
+ */
 public class MetaCompress {
 
 	/**
 	 * Compresses all item's enchantments to a String
 	 * @param enchant
-	 * @return
+	 * @return String containing all serialised enchantments.
 	 */
 	public static String compressEnchantments(Map<Enchantment, Integer> enchant) {
 		StringBuilder sBuilder = new StringBuilder();
@@ -40,7 +45,7 @@ public class MetaCompress {
 	 * Compress all active potions buffs and debuffs.
 	 * Format: (Type;Duration;Amplifier:)
 	 * @param potionEffects
-	 * @return
+	 * @return String containing all serialised potion buffs.
 	 */
 	public static String compressPotionBuffs(Collection<PotionEffect> potionEffects) {
 		StringBuilder sBuilder = new StringBuilder();
@@ -69,7 +74,7 @@ public class MetaCompress {
 	 * </ul>
 	 * "=" is used to separate traits.
 	 * @param iStack
-	 * @return
+	 * @return String containing compressed meta data.
 	 */
 	public static String compressMetaData(ItemStack iStack) {
 		ItemMeta iMeta = iStack.getItemMeta();
@@ -161,6 +166,11 @@ public class MetaCompress {
 		
 	}
 	
+	/**
+	 * Utility method to format rgb.
+	 * @param colour
+	 * @return String of format rrr.ggg.bbb
+	 */
 	private static String formatColour(Color colour) {
 		return String.format("%s.%s.%s",
 				colour.getRed(),
