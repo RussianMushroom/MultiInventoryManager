@@ -27,5 +27,5 @@ spectator: {true/false}
 
 
 ## Upcoming Features
-- Command `/mimremove [playerName]` to remove specific player data file.
+- Command `/mim delete [playerName]` to remove specific player data file.
 
