@@ -1,5 +1,6 @@
 package io.github.russianmushroom.player;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.bukkit.GameMode;
@@ -19,7 +20,8 @@ public class PlayerFileManager {
 	 * @param saving
 	 * @throws IOException
 	 */
-	public static void handle(PlayerManager pManager, boolean saving) throws IOException {
+	public synchronized static void handle(PlayerManager pManager, boolean saving) 
+			throws IOException, FileNotFoundException {
 		switch (pManager.getPlayer().getGameMode()) {
 		case ADVENTURE:
 			if(BaseYAML.getSaveAdventure()) {
