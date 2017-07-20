@@ -20,9 +20,9 @@ public class PlayerFileManager {
 	 * @param saving
 	 * @throws IOException
 	 */
-	public synchronized static void handle(PlayerManager pManager, boolean saving) 
+	public synchronized static void handle(PlayerManager pManager, boolean saving, GameMode gMode) 
 			throws IOException, FileNotFoundException {
-		switch (pManager.getPlayer().getGameMode()) {
+		switch (gMode) {
 		case ADVENTURE:
 			if(BaseYAML.getSaveAdventure()) {
 				if(saving)
