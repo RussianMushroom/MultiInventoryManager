@@ -18,6 +18,7 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -27,6 +28,7 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 
@@ -41,6 +43,7 @@ public class MetaDecompress {
 	private static FireworkMeta fMeta;
 	private static BannerMeta bMeta;
 	private static MapMeta mMeta;
+	private static BlockStateMeta bStackMeta;
 	
 	/**
 	 * Decompresses all String into Enchantment list.
@@ -191,6 +194,7 @@ public class MetaDecompress {
                 					
                 		});
                 	break;
+                	// Maps
                 case "M":
                 	mMeta = (MapMeta) iMeta;
                 	String[] mapDetails = effectList.get(effect).split("\\+");
@@ -201,7 +205,24 @@ public class MetaDecompress {
                 		mMeta.setLocationName(mapDetails[1]);
                 	if(!mapDetails[2].equals(""))
                 		mMeta.setScaling(Boolean.getBoolean(mapDetails[2]));
-                	
+                	break;
+                // Shulker boxes
+                case "S":
+        			ShulkerBox shulker = (ShulkerBox) ((BlockStateMeta) iMeta).getBlockState();
+        			String[] items = effectList.get(effect).split("\\.");
+        			bStackMeta = (BlockStateMeta) iMeta;
+
+					shulker.getInventory().clear();
+					
+					// Set shulker inventory
+					for(int i = 0; i < items.length; i++) {
+    					Stack stack = new Stack(items[i], "\\&");
+    					
+    					shulker.getInventory().setItem(i, stack.toItemStack());
+					}
+					
+					bStackMeta.setBlockState(shulker);
+        			
 				}
 			});
 		
