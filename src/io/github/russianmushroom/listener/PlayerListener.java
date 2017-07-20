@@ -1,5 +1,6 @@
 package io.github.russianmushroom.listener;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,9 +13,8 @@ import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import io.github.russianmushroom.player.LoadPlayerData;
+import io.github.russianmushroom.player.PlayerFileManager;
 import io.github.russianmushroom.player.PlayerManager;
-import io.github.russianmushroom.player.SavePlayerData;
 
 
 /**
@@ -31,18 +31,17 @@ public class PlayerListener implements Listener{
 	 * @param event
 	 */
 	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) {
+	public void onPlayerJoin(PlayerJoinEvent event) throws FileNotFoundException {
 		// Update files
 		try {
 			// Remove all potion effects
 			removePotionEffects(event.getPlayer());
 
-			LoadPlayerData.load(
+			PlayerFileManager.handle(
 					new PlayerManager(event.getPlayer()), 
-					event.getPlayer().getGameMode());
+					false);
 		} catch (IOException e) {
-			displayWarning(event.getPlayer(), false);
-			e.printStackTrace();
+			// displayWarning(event.getPlayer(), false);
 		}
 	}
 	
@@ -54,12 +53,11 @@ public class PlayerListener implements Listener{
 	public void onPlayerGameModeChange(PlayerGameModeChangeEvent event) {
 		// Save previous GameMode
 		try {
-			SavePlayerData.save(
+			PlayerFileManager.handle(
 					new PlayerManager(event.getPlayer()), 
-					event.getPlayer().getGameMode());
+					true);
 		} catch (IOException e) {
 			displayWarning(event.getPlayer(), true);
-			e.printStackTrace();
 		}
 		
 		// Load data for next GameMode
@@ -67,12 +65,11 @@ public class PlayerListener implements Listener{
 			// Remove all potion effects
 			removePotionEffects(event.getPlayer());
 			
-			LoadPlayerData.load(
-					new PlayerManager(event.getPlayer()),
-					event.getNewGameMode());
+			PlayerFileManager.handle(
+					new PlayerManager(event.getPlayer()), 
+					false);
 		} catch (IOException e) {
-			displayWarning(event.getPlayer(), false);
-			e.printStackTrace();
+			// displayWarning(event.getPlayer(), false);
 		}
 		
 	}
@@ -85,12 +82,11 @@ public class PlayerListener implements Listener{
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		// Update files
 		try {
-			SavePlayerData.save(
+			PlayerFileManager.handle(
 					new PlayerManager(event.getPlayer()), 
-					event.getPlayer().getGameMode());
+					true);
 		} catch (IOException e) {
 			displayWarning(event.getPlayer(), true);
-			e.printStackTrace();
 		}
 	}
 	
