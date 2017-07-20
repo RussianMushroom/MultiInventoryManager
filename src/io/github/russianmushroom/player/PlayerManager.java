@@ -35,14 +35,12 @@ public class PlayerManager {
 
 		// Bind player inventory
 		Arrays.asList(player.getInventory().getContents())
-			.stream()
 			.forEach(i -> {
 				playerInventory += new Stack(i).toString() + "#";
 			});
 		
 		// Bind player ender inventory
 		Arrays.asList(player.getEnderChest().getContents())
-			.stream()
 			.forEach(i -> {
 				playerEnderInventory += new Stack(i).toString() + "#";
 			});
