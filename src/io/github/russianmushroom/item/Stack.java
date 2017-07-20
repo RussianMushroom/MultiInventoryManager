@@ -45,8 +45,8 @@ public class Stack extends Object {
 	 * Receives raw input from save file and converts to Stack
 	 * @param iStack
 	 */
-	public Stack(String iStack) {
-		individualComp = Arrays.asList(iStack.split(":"));
+	public Stack(String iStack, String splitChar) {
+		individualComp = Arrays.asList(iStack.split(splitChar));
 		
 		// Check all elements
 		quantity = has(0) ? Integer.parseInt(individualComp.get(0)) : 0;
@@ -77,6 +77,17 @@ public class Stack extends Object {
 	public String toString() {
 		return String.format(
 				"%s:%s:%s:%s:%s:",
+				quantity,
+				type,
+				durability,
+				metaTags,
+				enchantTags
+				);
+	}
+	
+	public String toShulkerString() {
+		return String.format(
+				"%s&%s&%s&%s&%s&",
 				quantity,
 				type,
 				durability,
