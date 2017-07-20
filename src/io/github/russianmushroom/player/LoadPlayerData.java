@@ -77,15 +77,8 @@ public class LoadPlayerData {
 		pManager.getPlayer().getInventory().clear();
 		
 		String playerInv = playerInventory.get("playerInventory").toString();
-		List<String> individualItems = Arrays.asList(playerInv.split("#"));
-		
-		individualItems.stream()
-			.forEach(rawItem -> {
-				Stack stack = new Stack(rawItem, ":");
-				
-				pManager.getPlayer().getInventory().addItem(stack.toItemStack());
-			});
-		
+		addToInventory(playerInv, pManager.getPlayer().getInventory());
+
 	}
 	
 	/**
@@ -98,11 +91,18 @@ public class LoadPlayerData {
 		pManager.getPlayer().getEnderChest().clear();
 		
 		String playerEnderInventory = pManager.getPlayerEnderInv().orElse("");
-		Arrays.asList(playerEnderInventory.split("#")).forEach(i -> {
-			Stack stack = new Stack(i, ":");
+		addToInventory(playerEnderInventory, pManager.getPlayer().getEnderChest());
+		
+	}
+	
+	private static void addToInventory(String invString, Inventory inventory) {
+		List<String> individualItems = Arrays.asList(invString.split("#"));
+		
+		for(int i = 0; i < individualItems.size(); i++) {
+			Stack stack = new Stack(individualItems.get(i), ":");
 			
-			enderInventory.addItem(stack.toItemStack());
-		});
+			inventory.setItem(i, stack.toItemStack());;
+		}
 	}
 	
 }
