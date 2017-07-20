@@ -19,13 +19,13 @@ spectator: {true/false}
 ## Features
 :white_check_mark: Saves player's inventory and data (Health, Saturation, Level and Experience Points etc.) upon leave and loads them when the player rejoins. The same is also done when the player changes his/her gamemode.
 
-:white_check_mark: Keeps track of item's enchantments, meta data such as custom names or colour. 
+:white_check_mark: Keeps track of item's enchantments, meta data such as custom names or colour as well as armour and offhand items.
 
 :white_check_mark: Saves player's ender chest inventory.
 
 :white_check_mark: Saves player's shulker box inventory.
 
+
 ## Upcoming Features
-- Save player's armour and offhand slot items as well as applying those accordingly.
 - Command `/mimremove [playerName]` to remove specific player data file.
 
