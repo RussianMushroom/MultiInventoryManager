@@ -50,7 +50,8 @@ public class MultiInventoryManager extends JavaPlugin {
 				try {
 					PlayerFileManager.handle(
 							new PlayerManager(player.getPlayer()), 
-							true);
+							true,
+							player.getGameMode());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
