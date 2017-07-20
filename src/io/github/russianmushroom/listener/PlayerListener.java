@@ -39,7 +39,8 @@ public class PlayerListener implements Listener{
 
 			PlayerFileManager.handle(
 					new PlayerManager(event.getPlayer()), 
-					false);
+					false,
+					event.getPlayer().getGameMode());
 		} catch (IOException e) {
 			// displayWarning(event.getPlayer(), false);
 		}
@@ -55,7 +56,8 @@ public class PlayerListener implements Listener{
 		try {
 			PlayerFileManager.handle(
 					new PlayerManager(event.getPlayer()), 
-					true);
+					true,
+					event.getPlayer().getGameMode());
 		} catch (IOException e) {
 			displayWarning(event.getPlayer(), true);
 		}
@@ -67,7 +69,8 @@ public class PlayerListener implements Listener{
 			
 			PlayerFileManager.handle(
 					new PlayerManager(event.getPlayer()), 
-					false);
+					false,
+					event.getNewGameMode());
 		} catch (IOException e) {
 			// displayWarning(event.getPlayer(), false);
 		}
@@ -84,7 +87,8 @@ public class PlayerListener implements Listener{
 		try {
 			PlayerFileManager.handle(
 					new PlayerManager(event.getPlayer()), 
-					true);
+					true,
+					event.getPlayer().getGameMode());
 		} catch (IOException e) {
 			displayWarning(event.getPlayer(), true);
 		}
