@@ -1,13 +1,17 @@
 package io.github.russianmushroom.item;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.bukkit.Color;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -161,6 +165,16 @@ public class MetaCompress {
 			sBuilder.append(mMeta.isScaling() + "+");
 			sBuilder.append("=");
 		} 
+		// Deal with Shulker boxes
+		else if(((BlockStateMeta) iMeta).getBlockState() instanceof ShulkerBox) {
+			sBuilder.append("S");
+			ShulkerBox shulker = (ShulkerBox) ((BlockStateMeta)iMeta).getBlockState();
+			
+			Arrays.asList(shulker.getInventory().getContents())
+				.forEach(i -> {
+					sBuilder.append(new Stack(i).toShulkerString() + ".");
+				});
+		}
 		
 		return sBuilder.toString();
 		
