@@ -17,7 +17,6 @@ import io.github.russianmushroom.item.Stack;
 public class PlayerManager {
 	
 	private String playerInventory = "";
-	// private String playerArmour = "";
 	private String playerEnderInventory = "";
 	private String playerActivePotions = "";
 	private Player player;
