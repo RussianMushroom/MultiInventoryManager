@@ -7,11 +7,13 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.GameMode;
 import org.yaml.snakeyaml.Yaml;
 
-import io.github.russianmushroom.yaml.BaseYAML;
+import io.github.russianmushroom.files.LoadDefaults;
 
 /**
  * Load all player's data and save them to player-specific yml file.
@@ -37,7 +39,7 @@ public class SavePlayerData {
 		pManager = pM;
 		
 		// Create user dataFile
-		playerData = new File(BaseYAML.getPlayerFolder() 
+		playerData = new File(LoadDefaults.getPlayerFolder() 
 				+ File.separator 
 				+ pManager.getPlayerUUID().toString() 
 				+ ".yml");
@@ -78,11 +80,14 @@ public class SavePlayerData {
 		
 		
 		obj = (Map<String, Map<String, Object>>) yaml.load(new FileInputStream(playerData));
+		
 		obj.replace(gMode.toString(), data);
 		
 		FileWriter writer = new FileWriter(playerData);
 		
 		yaml.dump(obj, writer);
+		writer.flush();
+		writer.close();
 		
 	}
 	
@@ -100,6 +105,11 @@ public class SavePlayerData {
 		FileWriter writer = new FileWriter(dataFile);
 		
 		yaml.dump(obj, writer);
+		writer.flush();
+		writer.close();
+		
+		Logger.getLogger("Minecraft").log(Level.INFO, String.format(
+				"%s's player file has been created!", pManager.getPlayer().getName()));
 		
 	}
 	
