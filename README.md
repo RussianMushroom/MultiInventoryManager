@@ -23,8 +23,9 @@ spectator: {true/false}
 
 :white_check_mark: Saves player's ender chest inventory.
 
+:white_check_mark: Saves player's shulker box inventory.
+
 ## Upcoming Features
-- Save Shulker boxes.
 - Save player's armour and offhand slot items as well as applying those accordingly.
 - Command `/mimremove [playerName]` to remove specific player data file.
 
