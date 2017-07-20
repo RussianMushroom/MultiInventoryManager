@@ -81,7 +81,7 @@ public class LoadPlayerData {
 		
 		individualItems.stream()
 			.forEach(rawItem -> {
-				Stack stack = new Stack(rawItem);
+				Stack stack = new Stack(rawItem, ":");
 				
 				pManager.getPlayer().getInventory().addItem(stack.toItemStack());
 			});
@@ -99,7 +99,7 @@ public class LoadPlayerData {
 		
 		String playerEnderInventory = pManager.getPlayerEnderInv().orElse("");
 		Arrays.asList(playerEnderInventory.split("#")).forEach(i -> {
-			Stack stack = new Stack(i);
+			Stack stack = new Stack(i, ":");
 			
 			enderInventory.addItem(stack.toItemStack());
 		});
