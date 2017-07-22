@@ -32,7 +32,6 @@ public class MultiInventoryManager extends JavaPlugin {
 		
 		// Add necessary files
 		LoadDefaults.load();
-
 		// Attach listeners
 		getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 		
@@ -41,7 +40,7 @@ public class MultiInventoryManager extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-		log.log(Level.INFO, String.format("%s: Saving all player's data...", pdfFile.getName()));
+		log.log(Level.INFO, String.format("[%s] Saving everyone's data.", pdfFile.getName()));
 		
 		// Save everyone's data
 		getServer().getOnlinePlayers()
@@ -75,10 +74,7 @@ public class MultiInventoryManager extends JavaPlugin {
 				else
 					sender.sendMessage("Invalid command!");
 			}
-				
-				
 		}
-			
 		return super.onCommand(sender, command, label, args);
 	}
 
