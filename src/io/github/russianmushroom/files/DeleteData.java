@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 /**
@@ -36,11 +37,12 @@ public class DeleteData {
 		}
 		
 		Bukkit.broadcastMessage(player.toString());
-		// Check if the sender has the necessary permissions.
-		if(!sender.hasPermission("mim.delete")) {
-			sender.sendMessage("You do not have the necessary permissions to use this command!");
-			return false;
-		} 
+		// Check if the sender has the necessary permissions, or is the console.
+		if(!(sender instanceof ConsoleCommandSender))
+			if(!sender.hasPermission("mim.delete")) {
+				sender.sendMessage("You do not have the necessary permissions to use this command!");
+				return false;
+			} 
 		
 		playerUUID = player.getUniqueId();
 		playerDataPath = LoadDefaults.getPlayerFolder().toString() + File.separator + playerUUID + ".yml";
@@ -56,16 +58,5 @@ public class DeleteData {
 		
 		return false;
 	}
-	
-	/*
-	private static Optional<Player> getPlayerName(String playerName) {
-		// Get list of online and offline players and check whether the name exists.
-		Bukkit.getPl()
-			.parallelStream()
-			.filter(player -> player.getName().equals(playerName))
-			.findFirst()
-			.orElse(Optional.empty())
-	}
-	*/
 	
 }
