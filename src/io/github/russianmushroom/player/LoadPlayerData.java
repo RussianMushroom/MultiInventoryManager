@@ -1,13 +1,12 @@
 package io.github.russianmushroom.player;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.bukkit.GameMode;
 import org.bukkit.inventory.Inventory;
@@ -25,28 +24,27 @@ public class LoadPlayerData {
 	
 	private static Map<String, Object> playerInventory = Collections.synchronizedMap(new HashMap<>());
 
-	public synchronized static void load(PlayerManager pManager, GameMode gMode) 
-			throws IOException, FileNotFoundException {
+	public synchronized static void load(PlayerManager pManager, GameMode gMode) {
 		loadPlayerInventory(pManager, gMode);
 	}
 	
-	private static void loadPlayerInventory(PlayerManager pManager, GameMode gMode) 
-			throws IOException, FileNotFoundException {
-		playerInventory = BaseYAML.getAllData(new File(
+	private static void loadPlayerInventory(PlayerManager pManager, GameMode gMode) {
+		Optional<Map<String, Map<String, Object>>> prelimPlayerInventory = BaseYAML.getAllData(new File(
 				LoadDefaults.getPlayerFolder() 
 				+ File.separator 
 				+ pManager.getPlayerUUID().toString() 
-				+ ".yml"))
-				.get()
-				.get(gMode.toString());
+				+ ".yml"));
 		
 		// Set data to player
-		if(playerInventory != null || playerInventory.size() != 0) {
-			setPlayerData(pManager);
-			setPlayerInventory(pManager);
-			setPlayerEnderInventory(pManager, pManager.getPlayer().getEnderChest());
+		if(prelimPlayerInventory.isPresent()) {
+			playerInventory = prelimPlayerInventory.get().get(gMode.toString());
+			
+			if(!playerInventory.isEmpty()) {
+				setPlayerData(pManager);
+				setPlayerInventory(pManager);
+				setPlayerEnderInventory(pManager, pManager.getPlayer().getEnderChest());
+			}
 		}
-		
 	}
 	
 	private static void setPlayerData(PlayerManager pManager) {
