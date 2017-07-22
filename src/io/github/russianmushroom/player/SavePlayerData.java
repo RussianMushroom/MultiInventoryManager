@@ -109,7 +109,7 @@ public class SavePlayerData {
 		writer.close();
 		
 		Logger.getLogger("Minecraft").log(Level.INFO, String.format(
-				"%s's player file has been created!", pManager.getPlayer().getName()));
+				"[MultiInventoryManager] %s's player file has been created!", pManager.getPlayer().getName()));
 		
 	}
 	
