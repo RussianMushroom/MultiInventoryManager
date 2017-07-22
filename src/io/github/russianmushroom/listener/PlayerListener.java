@@ -1,6 +1,5 @@
 package io.github.russianmushroom.listener;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +30,7 @@ public class PlayerListener implements Listener{
 	 * @param event
 	 */
 	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) throws FileNotFoundException {
+	public void onPlayerJoin(PlayerJoinEvent event) {
 		// Update files
 		try {
 			// Remove all potion effects
