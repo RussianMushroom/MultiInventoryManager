@@ -31,24 +31,19 @@ public class LoadDefaults {
 	 * @return basePath of the files.
 	 */
 	public static Path getPlayerFolder() {
-			try {
-				if(!CONFIG_FILE.exists())
-					Logger.getLogger("Minecraft").log(Level.WARNING,
-							String.format("%s was not detected, using default path: %s",
-									CONFIG_FILE.toString(),
-									playerSaveBase.toString()));
-				else {
-					if(BaseYAML.getData(CONFIG_FILE).isPresent())
-						playerSaveBase = new File(BaseYAML.getData(CONFIG_FILE).get().get("basePath").toString());
-				}
-					
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			createPlayerSaveBase();
-			
-			return playerSaveBase.toPath();
+		if(!CONFIG_FILE.exists())
+			Logger.getLogger("Minecraft").log(Level.WARNING,
+					String.format("[MultiInventoryManager] %s was not detected, using default path: %s",
+							CONFIG_FILE.toString(),
+							playerSaveBase.toString()));
+		else {
+			if(BaseYAML.getData(CONFIG_FILE).isPresent())
+				playerSaveBase = new File(BaseYAML.getData(CONFIG_FILE).get().get("basePath").toString());
+		}
+
+	createPlayerSaveBase();
+	
+	return playerSaveBase.toPath();
 	}
 	
 	private static void createPlayerSaveBase() {
@@ -67,7 +62,7 @@ public class LoadDefaults {
 				fWriter.close();
 			} catch (IOException e) {
 				Logger.getLogger("Minecraft").log(Level.WARNING,
-						String.format("%s could not be created, please add the MIMconfig.yml manually.",
+						String.format("[MultiInventoryManager] %s could not be created, please add the MIMconfig.yml manually.",
 								CONFIG_FILE.toString()));
 			}
 		}
