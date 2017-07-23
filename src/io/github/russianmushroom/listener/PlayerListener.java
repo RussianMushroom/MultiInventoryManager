@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import io.github.russianmushroom.player.PlayerFileManager;
@@ -74,6 +75,23 @@ public class PlayerListener implements Listener{
 			// displayWarning(event.getPlayer(), false);
 		}
 		
+	}
+	
+	/**
+	 * Handle player kicks: Save player data.
+	 * @param event
+	 */
+	@EventHandler
+	public void onPlayerKick(PlayerKickEvent event) {
+		// Update files
+				try {
+					PlayerFileManager.handle(
+							new PlayerManager(event.getPlayer()), 
+							true,
+							event.getPlayer().getGameMode());
+				} catch (IOException e) {
+					displayWarning(event.getPlayer(), true);
+				}
 	}
 	
 	/**
