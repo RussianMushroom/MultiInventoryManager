@@ -43,7 +43,8 @@ public class MultiInventoryManager extends JavaPlugin {
 		log.log(Level.INFO, String.format("[%s] Saving everyone's data.", pdfFile.getName()));
 		
 		// Save everyone's data
-		getServer().getOnlinePlayers()
+		if(!getServer().getOnlinePlayers().isEmpty()) {
+			getServer().getOnlinePlayers()
 			.parallelStream()
 			.forEach(player -> {
 				try {
@@ -57,6 +58,7 @@ public class MultiInventoryManager extends JavaPlugin {
 			});
 
 		this.log.info(pdfFile.getName() +" v" + pdfFile.getVersion() + " has been disabled!");
+		}
 		
 		super.onDisable();
 	}
