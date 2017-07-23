@@ -17,6 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.Repairable;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
@@ -74,6 +77,9 @@ public class MetaCompress {
 	 * <li>B: Banner</li>
 	 * <li>M: MapMeta</li>
 	 * <li>S: Shulkerbox</li>
+	 * <li>R: Repairable</lI>
+	 * <li>K: Skull</li>
+	 * <li>G: Spawn egg</li>
 	 * </ul>
 	 * "=" is used to separate traits.
 	 * @param iStack
@@ -118,6 +124,7 @@ public class MetaCompress {
 		else if(iMeta instanceof EnchantmentStorageMeta) {
 			sBuilder.append("E" + compressEnchantments(
 							((EnchantmentStorageMeta) iMeta).getStoredEnchants()));
+			sBuilder.append("=");
 		}
 		// Deal with fireworks.
 		// As there can be a list of effects, add a separater (~) between the effects and the rest of the data.
@@ -165,14 +172,33 @@ public class MetaCompress {
 			sBuilder.append("=");
 		} 
 		// Deal with Shulker boxes
-		else if(((BlockStateMeta) iMeta).getBlockState() instanceof ShulkerBox) {
-			sBuilder.append("S");
-			ShulkerBox shulker = (ShulkerBox) ((BlockStateMeta)iMeta).getBlockState();
+		else if(iMeta instanceof BlockStateMeta)
+			if(((BlockStateMeta) iMeta).getBlockState() instanceof ShulkerBox) {
+				sBuilder.append("S");
+				ShulkerBox shulker = (ShulkerBox) ((BlockStateMeta)iMeta).getBlockState();
+				
+				Arrays.asList(shulker.getInventory().getContents())
+					.forEach(i -> {
+						sBuilder.append(new Stack(i).toShulkerString() + ".");
+					});
+				sBuilder.append("=");
+			}
+		// Deal with repairable items
+		else if(iMeta instanceof Repairable) {
+			Repairable repair = (Repairable) iMeta;
 			
-			Arrays.asList(shulker.getInventory().getContents())
-				.forEach(i -> {
-					sBuilder.append(new Stack(i).toShulkerString() + ".");
-				});
+			sBuilder.append("I" + repair.getRepairCost());
+			sBuilder.append("=");
+		}
+		// Deal with skulls
+		else if(iMeta instanceof SkullMeta) {
+			SkullMeta sMeta = (SkullMeta) iMeta;
+			if(sMeta.hasOwner())
+				sBuilder.append("K" + sMeta.getOwner() + "#");
+		}
+		// Deal with spawn eggs
+		else if(iMeta instanceof SpawnEggMeta) {
+			sBuilder.append("G" + ((SpawnEggMeta) iMeta).getSpawnedType().name() + "#");
 		}
 		
 		return sBuilder.toString();

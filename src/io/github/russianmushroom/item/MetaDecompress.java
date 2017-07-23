@@ -16,6 +16,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Builder;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BlockStateMeta;
@@ -24,6 +25,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.Repairable;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -44,6 +48,8 @@ public class MetaDecompress {
 	private static BannerMeta bMeta;
 	private static MapMeta mMeta;
 	private static BlockStateMeta bStackMeta;
+	private static SkullMeta sMeta;
+	private static SpawnEggMeta sEggMeta;
 	
 	/**
 	 * Decompresses all String into Enchantment list.
@@ -58,10 +64,10 @@ public class MetaDecompress {
 		
 		Arrays.asList(enchant.split(";")).stream()
 			.forEach(e -> {
-				Bukkit.broadcastMessage(e);
+				String[] en = e.toString().split("~");
 				enchantments.put(
-						Enchantment.getByName(e.toString().split("~")[0]),
-						Integer.parseInt(e.toString().split("~")[1])
+						Enchantment.getByName(en[0]),
+						en.length != 2 ? 1 : Integer.parseInt(en[1])
 						);	
 				});
 		
@@ -156,10 +162,10 @@ public class MetaDecompress {
                 case "E":
                 	Map<Enchantment, Integer> enchant = MetaDecompress.decompressEnchantments(
                 			effectList.get(effect));
-                	
-                	enchant.keySet().forEach(e -> {
-                		iMeta.addEnchant(e, enchant.get(e), true);
-                	});
+                	if(!enchant.isEmpty() || enchant != null)
+                		enchant.keySet().forEach(e -> {
+                    		iMeta.addEnchant(e, (enchant.get(e) != null) ? enchant.get(e) : 1, true);
+                    	});
                 	break;
                 // Fireworks
                 case "F":
@@ -222,13 +228,28 @@ public class MetaDecompress {
 					}
 					
 					bStackMeta.setBlockState(shulker);
-        			
+        			break;
+        		// Repairables
+                case "I":
+                	Repairable repair = (Repairable) iMeta;
+                	
+                	repair.setRepairCost(Integer.parseInt(effectList.get(effect)));              
+                	break;
+                // SkullMeta
+                case "K":
+                	sMeta = (SkullMeta) iMeta;
+                	
+                	sMeta.setOwner(effectList.get(effect).toString());
+                	break;
+                // Spawn eggs
+                case "G":
+                	sEggMeta = (SpawnEggMeta) iMeta;
+                	
+                	sEggMeta.setSpawnedType(EntityType.valueOf(effectList.get(effect).toString()));
 				}
 			});
 		
-		
 		return iMeta;
-		
 	}
 	
 	/**
