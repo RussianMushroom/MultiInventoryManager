@@ -162,7 +162,7 @@ public class MetaDecompress {
                 case "E":
                 	Map<Enchantment, Integer> enchant = MetaDecompress.decompressEnchantments(
                 			effectList.get(effect));
-                	if(!enchant.isEmpty() || enchant != null)
+                	if(!enchant.isEmpty() && enchant != null)
                 		enchant.keySet().forEach(e -> {
                     		iMeta.addEnchant(e, (enchant.get(e) != null) ? enchant.get(e) : 1, true);
                     	});

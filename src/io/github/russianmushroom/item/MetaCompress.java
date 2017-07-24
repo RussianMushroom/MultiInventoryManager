@@ -101,7 +101,7 @@ public class MetaCompress {
 		if(iMeta instanceof LeatherArmorMeta)
 			sBuilder.append("A" + formatColour(((LeatherArmorMeta) iMeta).getColor()) + "=");
 		// Deal with potions. Save it's effects.
-		else if(iMeta instanceof PotionMeta) {
+		if(iMeta instanceof PotionMeta) {
 			// If potion has custom effects. (R+name+amplifier+duration)
 			if(((PotionMeta) iMeta).hasCustomEffects())
 				((PotionMeta) iMeta).getCustomEffects()
@@ -121,7 +121,7 @@ public class MetaCompress {
 			}
 		}
 		// Deal with enchanted books. (E+enchantmentCompressedString)
-		else if(iMeta instanceof EnchantmentStorageMeta) {
+		if(iMeta instanceof EnchantmentStorageMeta) {
 			sBuilder.append("E" + compressEnchantments(
 							((EnchantmentStorageMeta) iMeta).getStoredEnchants()));
 			sBuilder.append("=");
@@ -129,7 +129,7 @@ public class MetaCompress {
 		// Deal with fireworks.
 		// As there can be a list of effects, add a separater (~) between the effects and the rest of the data.
 		// (F + effects(flicker+trail+colours+fadeColours+type) + ~ + power)
-		else if(iMeta instanceof FireworkMeta) {
+		if(iMeta instanceof FireworkMeta) {
 			if(((FireworkMeta) iMeta).hasEffects())
 				sBuilder.append("F");
 						((FireworkMeta) iMeta).getEffects()
@@ -150,7 +150,7 @@ public class MetaCompress {
 							});
 		}
 		// Deal with banners.
-		else if(iMeta instanceof BannerMeta) {
+		if(iMeta instanceof BannerMeta) {
 			BannerMeta bMeta = (BannerMeta) iMeta;
 			sBuilder.append("B");
 			bMeta.getPatterns()
@@ -163,7 +163,7 @@ public class MetaCompress {
 			sBuilder.append("=");
 		}
 		// Deal with maps. (M+colour+~+location+~+scaling)
-		else if(iMeta instanceof MapMeta) {
+		if(iMeta instanceof MapMeta) {
 			MapMeta mMeta = (MapMeta) iMeta;
 			sBuilder.append("M");
 			sBuilder.append(formatColour(mMeta.getColor()) + "+");
@@ -172,7 +172,7 @@ public class MetaCompress {
 			sBuilder.append("=");
 		} 
 		// Deal with Shulker boxes
-		else if(iMeta instanceof BlockStateMeta)
+		if(iMeta instanceof BlockStateMeta) {
 			if(((BlockStateMeta) iMeta).getBlockState() instanceof ShulkerBox) {
 				sBuilder.append("S");
 				ShulkerBox shulker = (ShulkerBox) ((BlockStateMeta)iMeta).getBlockState();
@@ -183,22 +183,23 @@ public class MetaCompress {
 					});
 				sBuilder.append("=");
 			}
+		}
 		// Deal with repairable items
-		else if(iMeta instanceof Repairable) {
+		if(iMeta instanceof Repairable) {
 			Repairable repair = (Repairable) iMeta;
 			
 			sBuilder.append("I" + repair.getRepairCost());
 			sBuilder.append("=");
 		}
 		// Deal with skulls
-		else if(iMeta instanceof SkullMeta) {
+		if(iMeta instanceof SkullMeta) {
 			SkullMeta sMeta = (SkullMeta) iMeta;
 			if(sMeta.hasOwner())
-				sBuilder.append("K" + sMeta.getOwner() + "#");
+				sBuilder.append("K" + sMeta.getOwner() + "=");
 		}
 		// Deal with spawn eggs
-		else if(iMeta instanceof SpawnEggMeta) {
-			sBuilder.append("G" + ((SpawnEggMeta) iMeta).getSpawnedType().name() + "#");
+		if(iMeta instanceof SpawnEggMeta) {
+			sBuilder.append("G" + ((SpawnEggMeta) iMeta).getSpawnedType() + "=");
 		}
 		
 		return sBuilder.toString();
