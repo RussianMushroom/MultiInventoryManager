@@ -9,6 +9,7 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
@@ -33,10 +34,14 @@ public class Stack extends Object {
 			this.durability = iStack.getDurability();
 			this.enchantments = iStack.getEnchantments();
 			this.enchantTags = MetaCompress.compressEnchantments(enchantments);
-			/*
+			
 			if(iStack.getItemMeta() instanceof BookMeta) {
-				
-			} else */if (iStack.hasItemMeta())
+				BookMeta bMeta = (BookMeta) iStack.getItemMeta();
+				if(!bMeta.getPages().isEmpty()) {
+					// Book book = new Book(bMeta.getTitle(), bMeta.getAuthor(), bMeta.getPages());
+					// metaTags = book.get
+				}
+			} else if (iStack.hasItemMeta())
 				metaTags = MetaCompress.compressMetaData(iStack);
 		}
 	}
