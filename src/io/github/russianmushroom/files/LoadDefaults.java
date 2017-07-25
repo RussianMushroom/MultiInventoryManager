@@ -19,9 +19,11 @@ public class LoadDefaults {
 	public static final File CONFIG_BASE = new File("plugins/MultiInventoryManager/");
 	public static final File CONFIG_FILE = new File(CONFIG_BASE + File.separator + "MIMconfig.yml");
 	public static File playerSaveBase = new File(LoadDefaults.CONFIG_BASE + File.separator + "playerdata");
+	public static File playerSaveBooks = new File(LoadDefaults.CONFIG_BASE + File.separator + "books");
 	
 	public static void load() {
-		createPlayerSaveBase();
+		createBase(playerSaveBase);
+		createBase(playerSaveBooks);
 		createConfigFile();
 	}
 	
@@ -31,25 +33,37 @@ public class LoadDefaults {
 	 * @return basePath of the files.
 	 */
 	public static Path getPlayerFolder() {
-		if(!CONFIG_FILE.exists())
-			Logger.getLogger("Minecraft").log(Level.WARNING,
-					String.format("[MultiInventoryManager] %s was not detected, using default path: %s",
-							CONFIG_FILE.toString(),
-							playerSaveBase.toString()));
-		else {
-			if(BaseYAML.getData(CONFIG_FILE).isPresent())
-				playerSaveBase = new File(BaseYAML.getData(CONFIG_FILE).get().get("basePath").toString());
-		}
-
-	createPlayerSaveBase();
+	playerSaveBase = getPath("basePath", playerSaveBase);
+	createBase(playerSaveBase);
 	
 	return playerSaveBase.toPath();
 	}
 	
-	private static void createPlayerSaveBase() {
+	public static Path getBookFolder() {
+		playerSaveBooks = getPath("bookPath", playerSaveBooks);
+		createBase(playerSaveBooks);
+		
+		return playerSaveBooks.toPath();
+	}
+	
+	private static File getPath(String pathName, File defaultPath) {
+		if(!CONFIG_FILE.exists())
+			Logger.getLogger("Minecraft").log(Level.WARNING,
+					String.format("[MultiInventoryManager] %s was not detected, using default path: %s",
+							CONFIG_FILE.toString(),
+							defaultPath.toString()));
+		else {
+			if(BaseYAML.getData(CONFIG_FILE).isPresent())
+				defaultPath = new File(BaseYAML.getData(CONFIG_FILE).get().get(pathName).toString());
+		}
+		
+		return defaultPath;
+	}
+	
+	private static void createBase(File base) {
 		// Create directory to save player's data
-		if(!playerSaveBase.exists())
-			playerSaveBase.mkdirs();
+		if(!base.exists())
+			base.mkdirs();
 	}
 	
 	private static void createConfigFile() {
@@ -57,7 +71,11 @@ public class LoadDefaults {
 		if(!CONFIG_FILE.exists()) {
 			try {
 				FileWriter fWriter = new FileWriter(CONFIG_FILE);
-				fWriter.write("basePath: \"plugins/MultiInventoryManager/playerdata\"\nadventure: false\nspectator: false");
+				fWriter.write(
+						"basePath: \"plugins/MultiInventoryManager/playerdata\""
+						+ "\nbookPath: \"plugins/MultiInventoryManager/books\""
+						+ "\n\nadventure: false"
+						+ "\nspectator: false");
 				fWriter.flush();
 				fWriter.close();
 			} catch (IOException e) {
