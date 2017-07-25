@@ -12,7 +12,8 @@ basePath: {insert_path}
 adventure: {true/false}
 spectator: {true/false}
 ```
-- basePath: Defines the save directory of the player's saves. [Default: plugins/MIM/playerdata]
+- basePath: Defines the save directory of the player's saves. [Default: plugins/MultiInventoryManager/playerdata]
+- bookPath: Defines the save directory of the player's books. [Default: plugins/MultiInventoryManager/books]
 - adventure: (De)activate adventure gamemode logging. [Default: false]
 - spectator: (De)activate spectator gamemode logging. [Default: false]
 
@@ -28,4 +29,5 @@ spectator: {true/false}
 
 ## Upcoming Features
 - Command `/mim delete [playerName]` to remove specific player data file.
+  - __Is not working properly__
 
