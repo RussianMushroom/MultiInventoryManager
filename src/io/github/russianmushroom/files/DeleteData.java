@@ -36,7 +36,6 @@ public class DeleteData {
 			return false;
 		}
 		
-		Bukkit.broadcastMessage(player.toString());
 		// Check if the sender has the necessary permissions, or is the console.
 		if(!(sender instanceof ConsoleCommandSender))
 			if(!sender.hasPermission("mim.delete")) {
