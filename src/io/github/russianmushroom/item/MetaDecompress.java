@@ -7,9 +7,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -20,6 +20,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -50,6 +51,7 @@ public class MetaDecompress {
 	private static BlockStateMeta bStackMeta;
 	private static SkullMeta sMeta;
 	private static SpawnEggMeta sEggMeta;
+	private static BookMeta boMeta;
 	
 	/**
 	 * Decompresses all String into Enchantment list.
@@ -246,6 +248,18 @@ public class MetaDecompress {
                 	sEggMeta = (SpawnEggMeta) iMeta;
                 	
                 	sEggMeta.setSpawnedType(EntityType.valueOf(effectList.get(effect).toString()));
+                	break;
+                // Books
+                case "O":
+                	boMeta = (BookMeta) iMeta;
+                	Optional<BookMeta> m = Book.getBookMeta(
+                			boMeta,
+                			Book.readFile(effectList.get(effect)));
+                	
+                	if(m.isPresent())
+                		boMeta = m.get();
+                	
+                	break;
 				}
 			});
 		
