@@ -38,8 +38,11 @@ public class Stack extends Object {
 			if(iStack.getItemMeta() instanceof BookMeta) {
 				BookMeta bMeta = (BookMeta) iStack.getItemMeta();
 				if(!bMeta.getPages().isEmpty()) {
-					// Book book = new Book(bMeta.getTitle(), bMeta.getAuthor(), bMeta.getPages());
-					// metaTags = book.get
+					Book book = new Book(bMeta.getTitle(), bMeta.getAuthor(), bMeta.getPages());
+					metaTags = "O" + book.toMetaString();
+					
+					// Create the book file
+					book.createFile();
 				}
 			} else if (iStack.hasItemMeta())
 				metaTags = MetaCompress.compressMetaData(iStack);
