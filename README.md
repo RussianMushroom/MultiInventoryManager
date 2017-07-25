@@ -8,6 +8,7 @@ Bukkit plugin to manage a player's inventory though worlds. Built for Minecraft 
 ### Contents:
 ```
 basePath: {insert_path}
+bookPath: {insert_path}
 
 adventure: {true/false}
 spectator: {true/false}
