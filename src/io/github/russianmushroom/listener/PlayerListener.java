@@ -1,8 +1,6 @@
 package io.github.russianmushroom.listener;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,8 +21,6 @@ import io.github.russianmushroom.player.PlayerManager;
  *
  */
 public class PlayerListener implements Listener{
-
-	Logger logger = Bukkit.getServer().getLogger();
 	
 	/**
 	 * Check the world type and load player's information accordingly
@@ -42,7 +38,7 @@ public class PlayerListener implements Listener{
 					false,
 					event.getPlayer().getGameMode());
 		} catch (IOException e) {
-			// displayWarning(event.getPlayer(), false);
+			displayWarning(event.getPlayer(), false);
 		}
 	}
 	
@@ -72,7 +68,7 @@ public class PlayerListener implements Listener{
 					false,
 					event.getNewGameMode());
 		} catch (IOException e) {
-			// displayWarning(event.getPlayer(), false);
+			displayWarning(event.getPlayer(), false);
 		}
 		
 	}
@@ -112,8 +108,8 @@ public class PlayerListener implements Listener{
 	}
 	
 	private void displayWarning(Player player, boolean saving) {
-		logger.log(Level.WARNING, String.format(
-				"Could not %s %s's inventory %s the file!",
+		Bukkit.getServer().getLogger().warning(String.format(
+				"[MultiInventoryManager] Could not %s %s's inventory %s the file!",
 				saving ? "save" : "load",
 				player.getName(),
 				saving ? "to" : "from")

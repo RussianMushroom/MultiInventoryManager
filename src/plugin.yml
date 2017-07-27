@@ -7,8 +7,6 @@ description: Separates players' inventories among worlds.
 commands:
   mim:
     description: MultiInventoryManager commands.
-    usage: |
-           /mim delete [player name]
 
 permissions:
     mim.delete:

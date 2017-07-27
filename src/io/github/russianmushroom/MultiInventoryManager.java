@@ -1,15 +1,13 @@
 package io.github.russianmushroom;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import io.github.russianmushroom.files.DeleteData;
+import io.github.russianmushroom.command.DeleteData;
 import io.github.russianmushroom.files.LoadDefaults;
 import io.github.russianmushroom.listener.PlayerListener;
 import io.github.russianmushroom.player.PlayerFileManager;
@@ -23,12 +21,11 @@ import io.github.russianmushroom.player.PlayerManager;
  */
 public class MultiInventoryManager extends JavaPlugin {
 	
-	private final Logger log = getServer().getLogger();
 	private final PluginDescriptionFile pdfFile = this.getDescription();
 	
 	@Override
 	public void onEnable() {
-		this.log.info(pdfFile.getName() +" v" + pdfFile.getVersion() + " has been enabled!");
+		getLogger().info(pdfFile.getName() +" v" + pdfFile.getVersion() + " has been enabled!");
 		
 		// Add necessary files
 		LoadDefaults.load();
@@ -40,7 +37,7 @@ public class MultiInventoryManager extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-		log.log(Level.INFO, String.format("[%s] Saving everyone's data.", pdfFile.getName()));
+		getLogger().info(String.format("[%s] Saving everyone's data.", pdfFile.getName()));
 		
 		// Save everyone's data
 		if(!getServer().getOnlinePlayers().isEmpty()) {
@@ -57,7 +54,7 @@ public class MultiInventoryManager extends JavaPlugin {
 				}
 			});
 
-		this.log.info(pdfFile.getName() +" v" + pdfFile.getVersion() + " has been disabled!");
+			getLogger().info(pdfFile.getName() +" v" + pdfFile.getVersion() + " has been disabled!");
 		}
 		
 		super.onDisable();
@@ -67,9 +64,9 @@ public class MultiInventoryManager extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(label.equalsIgnoreCase("mim")) {
 			if(args.length == 0)
-				sender.sendMessage("Invalid syntax");
+				sender.sendMessage("Invalid syntax: /mim delete [player name]");
 			else if(args.length > 2)
-				sender.sendMessage("Invalid syntax");
+				sender.sendMessage("Invalid syntax: /mim delete [player name]");
 			else {
 				if(args[0].equalsIgnoreCase("delete"))
 					DeleteData.remove(sender, args[1]);

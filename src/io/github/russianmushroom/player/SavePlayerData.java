@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.yaml.snakeyaml.Yaml;
 
@@ -108,7 +107,7 @@ public class SavePlayerData {
 		writer.flush();
 		writer.close();
 		
-		Logger.getLogger("Minecraft").log(Level.INFO, String.format(
+		Bukkit.getServer().getLogger().info(String.format(
 				"[MultiInventoryManager] %s's player file has been created!", pManager.getPlayer().getName()));
 		
 	}

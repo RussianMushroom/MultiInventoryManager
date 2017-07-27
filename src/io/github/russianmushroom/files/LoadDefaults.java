@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.bukkit.Bukkit;
 
 import io.github.russianmushroom.yaml.BaseYAML;
 
@@ -48,7 +48,7 @@ public class LoadDefaults {
 	
 	private static File getPath(String pathName, File defaultPath) {
 		if(!CONFIG_FILE.exists())
-			Logger.getLogger("Minecraft").log(Level.WARNING,
+			Bukkit.getServer().getLogger().warning(
 					String.format("[MultiInventoryManager] %s was not detected, using default path: %s",
 							CONFIG_FILE.toString(),
 							defaultPath.toString()));
@@ -79,7 +79,7 @@ public class LoadDefaults {
 				fWriter.flush();
 				fWriter.close();
 			} catch (IOException e) {
-				Logger.getLogger("Minecraft").log(Level.WARNING,
+				Bukkit.getServer().getLogger().warning(
 						String.format("[MultiInventoryManager] %s could not be created, please add the MIMconfig.yml manually.",
 								CONFIG_FILE.toString()));
 			}
