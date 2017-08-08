@@ -39,12 +39,6 @@
   </repositories>
   
   <dependencies>
-  	<dependency>
-  		<groupId>org.yaml</groupId>
-  		<artifactId>snakeyaml</artifactId>
-  		<version>1.18</version>
-  	</dependency>
-  	
   	<!-- Spigot API  -->
   	<dependency>
   		<groupId>org.spigotmc</groupId>
