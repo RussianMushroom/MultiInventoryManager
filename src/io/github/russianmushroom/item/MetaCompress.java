@@ -37,8 +37,10 @@ public class MetaCompress {
 	 */
 	public static String compressEnchantments(Map<Enchantment, Integer> enchant) {
 		StringBuilder sBuilder = new StringBuilder();
+		
 		enchant.keySet()
 			.forEach(enchantment -> {
+				// Enchantments with 1>level>5 will be dealt with in the MetaDecompress
 				sBuilder.append(
 						enchantment.getName() + "~" 
 						+ enchant.get(enchantment).toString() + ";");
