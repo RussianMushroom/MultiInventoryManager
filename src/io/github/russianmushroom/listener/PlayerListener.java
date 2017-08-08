@@ -48,29 +48,31 @@ public class PlayerListener implements Listener{
 	 */
 	@EventHandler
 	public void onPlayerGameModeChange(PlayerGameModeChangeEvent event) {
-		// Save previous GameMode
-		try {
-			PlayerFileManager.handle(
-					new PlayerManager(event.getPlayer()), 
-					true,
-					event.getPlayer().getGameMode());
-		} catch (IOException e) {
-			displayWarning(event.getPlayer(), true);
-		}
-		
-		// Load data for next GameMode
-		try {
-			// Remove all potion effects
-			removePotionEffects(event.getPlayer());
+		// Check if is disabled
+		if(!event.isCancelled()) {
+			// Save previous GameMode
+			try {
+				PlayerFileManager.handle(
+						new PlayerManager(event.getPlayer()), 
+						true,
+						event.getPlayer().getGameMode());
+			} catch (IOException e) {
+				displayWarning(event.getPlayer(), true);
+			}
 			
-			PlayerFileManager.handle(
-					new PlayerManager(event.getPlayer()), 
-					false,
-					event.getNewGameMode());
-		} catch (IOException e) {
-			displayWarning(event.getPlayer(), false);
-		}
-		
+			// Load data for next GameMode
+			try {
+				// Remove all potion effects
+				removePotionEffects(event.getPlayer());
+				
+				PlayerFileManager.handle(
+						new PlayerManager(event.getPlayer()), 
+						false,
+						event.getNewGameMode());
+			} catch (IOException e) {
+				displayWarning(event.getPlayer(), false);
+			}
+		}	
 	}
 	
 	/**
