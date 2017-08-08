@@ -67,9 +67,13 @@ public class MetaDecompress {
 		Arrays.asList(enchant.split(";")).stream()
 			.forEach(e -> {
 				String[] en = e.toString().split("~");
+				int level = en.length != 2 ? 1 : Integer.parseInt(en[1]);
+				
+				if(level > 5 || level < 1)
+					level = 5;
 				enchantments.put(
 						Enchantment.getByName(en[0]),
-						en.length != 2 ? 1 : Integer.parseInt(en[1])
+						level
 						);	
 				});
 		
