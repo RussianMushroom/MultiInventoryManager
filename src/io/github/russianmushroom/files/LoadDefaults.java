@@ -12,7 +12,6 @@ import io.github.russianmushroom.yaml.BaseYAML;
 /**
  * Create the default directories.
  * @author RussianMushroom
- *
  */
 public class LoadDefaults {
 
