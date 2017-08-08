@@ -4,7 +4,7 @@ Bukkit plugin to manage a player's inventory though worlds. Built for Minecraft 
 ## Requirements:
 
 - Bukkit or Spigot v1.12
-- A .yml file "MIMconfig.yml" in the /plugin/ directory.
+- ~~A .yml file "MIMconfig.yml" in the /plugin/ directory.~~ This is now created upon start.
 ### Contents:
 ```
 basePath: {insert_path}
