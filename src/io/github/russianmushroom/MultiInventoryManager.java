@@ -25,8 +25,6 @@ public class MultiInventoryManager extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		getLogger().info(pdfFile.getName() +" v" + pdfFile.getVersion() + " has been enabled!");
-		
 		// Add necessary files
 		LoadDefaults.load();
 		// Attach listeners
@@ -53,8 +51,6 @@ public class MultiInventoryManager extends JavaPlugin {
 					e.printStackTrace();
 				}
 			});
-
-			getLogger().info(pdfFile.getName() +" v" + pdfFile.getVersion() + " has been disabled!");
 		}
 		
 		super.onDisable();
